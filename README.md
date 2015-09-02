@@ -1,1 +1,1 @@
-# simple-p2p-file-sharing
+# Simple Peer to Peer File Sharing System
