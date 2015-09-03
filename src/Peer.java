@@ -1,3 +1,4 @@
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -7,7 +8,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 
@@ -18,8 +18,10 @@ public class Peer {
 	private ArrayList<String> fileNames;
 	private int numFiles;
 	
-	public Peer(){
-		
+	public Peer(String directory, ArrayList<String> fileNames, int numFiles){
+		this.directory = directory;
+		this.fileNames = fileNames;
+		this.numFiles = numFiles;
 		
 	}
 	
@@ -67,8 +69,16 @@ public class Peer {
     	for(String str : fileNames)
     		dOut.writeUTF(str);
     	dOut.flush();
+    	dOut.writeByte(-1);
+    	dOut.flush();
+    	dOut.close();
     	
-		
+    	//Reading the Unique Id from the Server
+    	DataInputStream dIn = new DataInputStream(socket.getInputStream());
+    	this.peerId = dIn.readInt();
+    	dIn.close();
+    	
+    	System.out.println("Running as Peer " + peerId + "!");
 	}
 
     
@@ -83,7 +93,7 @@ public class Peer {
     	}
     	
     	ArrayList<String> fileNames = Util.listFilesForFolder(folder);
-    	Peer peer = new Peer();
+    	Peer peer = new Peer(dir, fileNames, fileNames.size());
     	peer.register();
     }
 }
