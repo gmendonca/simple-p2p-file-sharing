@@ -22,6 +22,8 @@ public class CentralIndexingServer {
 			ServerSocket serverSocket = new ServerSocket(2386);
 			Socket socket = serverSocket.accept();
 			
+			//TODO: differentiate when is registering or looking up
+			
 			int peerId = getUniqueId();
 			
 			DataInputStream dIn = new DataInputStream(socket.getInputStream());

@@ -77,6 +77,9 @@ public class Peer {
     	System.out.println("Running as Peer " + peerId + "!");
 	}
 
+    public void lookup(String fileName){
+    	
+    }
     
     public static void main(String[] args) throws IOException {
     	
@@ -92,7 +95,7 @@ public class Peer {
     	Peer peer = new Peer(dir, fileNames, fileNames.size());
     	peer.register();
     	
-    	//TODO: create a thread for incoming requests (server)
+    	//TODO: create a thread for incoming requests (server side)
     	
     	while(true){
     		System.out.println("Select the option:");
