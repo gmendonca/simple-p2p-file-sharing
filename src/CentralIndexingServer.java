@@ -9,7 +9,7 @@ import java.util.HashMap;
 
 public class CentralIndexingServer {
 	
-	private static HashMap index;
+	private static HashMap<Integer,ArrayList<String>> index;
 	
 	private static int id = 0;
 	
@@ -18,50 +18,53 @@ public class CentralIndexingServer {
 	}
 	
 	private static void server() throws IOException{
-		ServerSocket serverSocket = new ServerSocket(2386);
-		Socket socket = serverSocket.accept();
-		
-		int peerId = getUniqueId();
-		
-		DataInputStream dIn = new DataInputStream(socket.getInputStream());
-		
-		Boolean end = false;
-		String directory = "";
-		ArrayList<String> fileNames = new ArrayList<String>();
-		int numFiles = 0;
-		
-		
-		while(!end){
-			byte messageType = dIn.readByte();
+		while(true){
+			ServerSocket serverSocket = new ServerSocket(2386);
+			Socket socket = serverSocket.accept();
 			
-			 switch(messageType){
-			 	case 1:
-			 		directory = dIn.readUTF();
-			 		break;
-			 	case 2:
-			 		numFiles = dIn.readInt();
-			 		break;
-			 	case 3:
-			 		for(int i = 0; i < numFiles; i++){
-			 			fileNames.add(dIn.readUTF());
-			 		}
-			 		break;
-			 	default:
-			 		end = true;
-			 }
+			int peerId = getUniqueId();
+			
+			DataInputStream dIn = new DataInputStream(socket.getInputStream());
+			
+			Boolean end = false;
+			ArrayList<String> fileNames = new ArrayList<String>();
+			int numFiles = 0;
+			
+			
+			while(!end){
+				byte messageType = dIn.readByte();
+				
+				 switch(messageType){
+				 	case 1:
+				 		numFiles = dIn.readInt();
+				 		break;
+				 	case 2:
+				 		for(int i = 0; i < numFiles; i++){
+				 			fileNames.add(dIn.readUTF());
+				 		}
+				 		break;
+				 	default:
+				 		end = true;
+				 }
+			}
+			
+			registry(peerId, fileNames);
+			
+			DataOutputStream dOut = new DataOutputStream(socket.getOutputStream());
+			dOut.writeInt(peerId);
+			dOut.flush();
+			dOut.close();
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
-		
-		register(peerId, directory, fileNames, numFiles);
-		
-		DataOutputStream dOut = new DataOutputStream(socket.getOutputStream());
-		dOut.writeInt(peerId);
-		dOut.flush();
-		dOut.close();
 		
 	}
 	
-	public static void register(int peerId, String directory, ArrayList<String> fileNames, int numFiles){
-		
+	public static void registry(int peerId, ArrayList<String> fileNames){
+		index.put(peerId, fileNames);
 	}
 	
 	public static void search(){
@@ -70,7 +73,7 @@ public class CentralIndexingServer {
 	
 	public static void main(String[] args) throws IOException {
 		
-		index = new HashMap();
+		index = new HashMap<Integer,ArrayList<String>>();
 		
 		new Thread() {
             public void run() {

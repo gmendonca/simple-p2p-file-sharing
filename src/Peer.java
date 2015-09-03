@@ -55,17 +55,13 @@ public class Peer {
     private void register() throws IOException {
     	Socket socket = new Socket("localhost", 2386);
     	DataOutputStream dOut = new DataOutputStream(socket.getOutputStream());
-    	
-    	//Name of directory
-    	dOut.writeByte(1);
-    	dOut.writeUTF(directory);
-    	dOut.flush(); 
+    
     	//Number of files
-    	dOut.writeByte(2);
+    	dOut.writeByte(1);
     	dOut.writeInt(numFiles);
     	dOut.flush(); 
     	//Files names
-    	dOut.writeByte(3);
+    	dOut.writeByte(2);
     	for(String str : fileNames)
     		dOut.writeUTF(str);
     	dOut.flush();
@@ -95,6 +91,13 @@ public class Peer {
     	ArrayList<String> fileNames = Util.listFilesForFolder(folder);
     	Peer peer = new Peer(dir, fileNames, fileNames.size());
     	peer.register();
+    	
+    	//TODO: create a thread for incoming requests (server)
+    	
+    	while(true){
+    		System.out.println("Select the option:");
+    		System.out.println("1 - Lookup for a file");
+    	}
     }
 }
 
