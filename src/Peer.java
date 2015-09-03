@@ -1,3 +1,5 @@
+import java.io.DataOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -5,9 +7,22 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
+import java.util.ArrayList;
 
 
 public class Peer {
+	
+	private int peerId;
+	private String directory;
+	private ArrayList<String> fileNames;
+	private int numFiles;
+	
+	public Peer(){
+		
+		
+	}
+	
 	public void server() throws IOException {
         ServerSocket serverSocket = new ServerSocket(3434);
         Socket socket = serverSocket.accept();
@@ -34,4 +49,43 @@ public class Peer {
             out.write(buffer, 0, count);
         }
     }
+    
+    private void register() throws IOException {
+    	Socket socket = new Socket("localhost", 2386);
+    	DataOutputStream dOut = new DataOutputStream(socket.getOutputStream());
+    	
+    	//Name of directory
+    	dOut.writeByte(1);
+    	dOut.writeUTF(directory);
+    	dOut.flush(); 
+    	//Number of files
+    	dOut.writeByte(2);
+    	dOut.writeInt(numFiles);
+    	dOut.flush(); 
+    	//Files names
+    	dOut.writeByte(3);
+    	for(String str : fileNames)
+    		dOut.writeUTF(str);
+    	dOut.flush();
+    	
+		
+	}
+
+    
+    public static void main(String[] args) throws IOException {
+    	
+    	String dir = args[0];
+    	File folder = new File(dir);
+    	
+    	if(!folder.isDirectory()){
+			System.out.println("Put a valid directory name");
+			return;
+    	}
+    	
+    	ArrayList<String> fileNames = Util.listFilesForFolder(folder);
+    	Peer peer = new Peer();
+    	peer.register();
+    }
 }
+
+	
