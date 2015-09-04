@@ -21,54 +21,60 @@ public class CentralIndexingServer {
 		
 		ServerSocket serverSocket = new ServerSocket(3434);
 		
-		//while(true){
+		while(true){
 			System.out.println("Waiting for peer...");
 			Socket socket = serverSocket.accept();
-			System.out.println("bla...");
-			
-			//TODO: differentiate when is registering or looking up
-			
-			int peerId = getUniqueId();
+			System.out.println("Peer connected...");
 			
 			DataInputStream dIn = new DataInputStream(socket.getInputStream());
 			
-			Boolean end = false;
-			ArrayList<String> fileNames = new ArrayList<String>();
-			int numFiles = 0;
+			byte option = dIn.readByte();
 			
-			
-			while(!end){
-				byte messageType = dIn.readByte();
+			switch(option){
+				case 0:
+					int peerId = getUniqueId();
+					
+					Boolean end = false;
+					ArrayList<String> fileNames = new ArrayList<String>();
+					int numFiles = 0;
+					
+					while(!end){
+						byte messageType = dIn.readByte();
+						
+						 switch(messageType){
+						 	case 1:
+						 		numFiles = dIn.readInt();
+						 		System.out.println(numFiles);
+						 		break;
+						 	case 2:
+						 		for(int i = 0; i < numFiles; i++){
+						 			fileNames.add(dIn.readUTF());
+						 			System.out.println(fileNames.get(i));
+						 		}
+						 		break;
+						 	default:
+						 		end = true;
+						 }
+					}
+					
+					registry(peerId, fileNames);
+					
+					DataOutputStream dOut = new DataOutputStream(socket.getOutputStream());
+					dOut.writeInt(peerId);
+					dOut.flush();
+					break;
+				case 1:
+					break;
+				default:					
 				
-				 switch(messageType){
-				 	case 1:
-				 		numFiles = dIn.readInt();
-				 		System.out.println(numFiles);
-				 		break;
-				 	case 2:
-				 		for(int i = 0; i < numFiles; i++){
-				 			fileNames.add(dIn.readUTF());
-				 			System.out.println(fileNames.get(i));
-				 		}
-				 		break;
-				 	default:
-				 		end = true;
-				 }
 			}
-			
-			registry(peerId, fileNames);
-			
-			DataOutputStream dOut = new DataOutputStream(socket.getOutputStream());
-			dOut.writeInt(peerId);
-			dOut.flush();
-			dOut.close();
+				
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-		//}
-		serverSocket.close();
+		}
 	}
 	
 	public static void registry(int peerId, ArrayList<String> fileNames){

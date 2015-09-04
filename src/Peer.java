@@ -56,6 +56,9 @@ public class Peer {
     	System.out.println("Connecting to the server...");
     	Socket socket = new Socket("localhost", 3434);
     	DataOutputStream dOut = new DataOutputStream(socket.getOutputStream());
+    	
+    	//Option to register in the server (new peer)
+    	dOut.writeByte(0);
     
     	//Number of files
     	dOut.writeByte(1);
