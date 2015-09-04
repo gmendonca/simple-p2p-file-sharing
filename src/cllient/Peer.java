@@ -1,3 +1,4 @@
+package cllient;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -10,6 +11,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Scanner;
+
+import util.Util;
 
 
 public class Peer {
@@ -86,8 +89,30 @@ public class Peer {
     	socket.close();
 	}
 
-    public void lookup(String fileName){
+    public void lookup(String fileName) throws IOException{
+    	System.out.println("Connecting to the server...");
+    	Socket socket = new Socket("localhost", 3434);
+    	DataOutputStream dOut = new DataOutputStream(socket.getOutputStream());
     	
+    	//Option to look for a file
+    	dOut.writeByte(1);
+    	
+    	
+    	//File name
+    	dOut.writeUTF(fileName);
+    	dOut.flush();
+    	
+    	//Reading the peer Address that has the file
+    	//TODO: add option for not found
+    	DataInputStream dIn = new DataInputStream(socket.getInputStream());
+    	String peerAddress = dIn.readUTF();
+    	
+    	dOut.close();
+    	dIn.close();
+
+    	System.out.println("Peer " + peerAddress + " has the file " + fileName + "!");
+    	
+    	socket.close();
     }
     
     public void download(){
@@ -128,6 +153,10 @@ public class Peer {
     		}
     		else if (option == 2){
     			peer.download();
+    		}else{
+    			scanner.close();
+    			System.out.println("Peer desconnected!");
+    			return;
     		}
     		
     	}

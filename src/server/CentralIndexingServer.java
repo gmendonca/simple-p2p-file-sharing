@@ -1,3 +1,4 @@
+package server;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -5,6 +6,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 
 public class CentralIndexingServer {
@@ -12,6 +14,8 @@ public class CentralIndexingServer {
 	private static HashMap<Integer,ArrayList<String>> index;
 	
 	private static int id = 0;
+	
+	private static ArrayList<Integer> peerList;
 	
 	private static int getUniqueId(){
 		return ++id;
@@ -32,6 +36,7 @@ public class CentralIndexingServer {
 			
 			switch(option){
 				case 0:
+					//TODO: need to create an Object peer with more info, address and port
 					int peerId = getUniqueId();
 					
 					Boolean end = false;
@@ -64,6 +69,8 @@ public class CentralIndexingServer {
 					dOut.flush();
 					break;
 				case 1:
+					String fileName = dIn.readUTF();
+					search(fileName);
 					break;
 				default:					
 				
@@ -81,8 +88,19 @@ public class CentralIndexingServer {
 		index.put(peerId, fileNames);
 	}
 	
-	public static void search(){
-		
+	public static Boolean search(String fileName){
+		Boolean found = false;
+		peerList = new ArrayList<Integer>();
+		 for (Map.Entry<Integer, ArrayList<String>> entry  : index.entrySet()){
+			 for(String fn : entry.getValue()){
+				 if(fn == fileName){
+					 found = true;
+					 peerList.add(entry.getKey());
+					 //TODO: it has to be the address not the id, create a peer class
+				 }
+			 }
+		 }
+		 return found;
 	}
 	
 	public static void main(String[] args) throws IOException {
