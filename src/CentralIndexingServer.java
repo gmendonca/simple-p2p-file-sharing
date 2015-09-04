@@ -18,8 +18,11 @@ public class CentralIndexingServer {
 	}
 	
 	private static void server() throws IOException{
-		while(true){
-			ServerSocket serverSocket = new ServerSocket(2386);
+		
+		ServerSocket serverSocket = new ServerSocket(2386);
+		
+		//while(true){
+			
 			Socket socket = serverSocket.accept();
 			
 			//TODO: differentiate when is registering or looking up
@@ -61,8 +64,8 @@ public class CentralIndexingServer {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-		}
-		
+		//}
+		serverSocket.close();
 	}
 	
 	public static void registry(int peerId, ArrayList<String> fileNames){

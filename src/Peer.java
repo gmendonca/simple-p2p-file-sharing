@@ -75,6 +75,8 @@ public class Peer {
     	dIn.close();
     	
     	System.out.println("Running as Peer " + peerId + "!");
+    	
+    	socket.close();
 	}
 
     public void lookup(String fileName){
