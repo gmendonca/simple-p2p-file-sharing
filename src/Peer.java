@@ -9,6 +9,7 @@ import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 
 public class Peer {
@@ -89,10 +90,16 @@ public class Peer {
     	
     }
     
+    public void download(){
+    	
+    }
+    
     public static void main(String[] args) throws IOException {
     	
     	String dir = args[0];
     	File folder = new File(dir);
+    	int option;
+    	String fileName;
     	
     	if(!folder.isDirectory()){
 			System.out.println("Put a valid directory name");
@@ -105,10 +112,25 @@ public class Peer {
     	
     	//TODO: create a thread for incoming requests (server side)
     	
-    	//while(true){
+    	
+    	Scanner scanner = new Scanner(System.in);
+    	while(true){
     		System.out.println("Select the option:");
     		System.out.println("1 - Lookup for a file");
-    	//}
+    		System.out.println("2 - Download file");
+    		
+    		option = scanner.nextInt();
+    		
+    		if(option == 1){
+    			System.out.println("Enter file name:");
+    			fileName = scanner.next();
+    			peer.lookup(fileName);
+    		}
+    		else if (option == 2){
+    			peer.download();
+    		}
+    		
+    	}
     }
 }
 
