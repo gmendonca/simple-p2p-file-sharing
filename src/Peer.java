@@ -53,7 +53,8 @@ public class Peer {
     }
     
     private void register() throws IOException {
-    	Socket socket = new Socket("localhost", 2386);
+    	System.out.println("Connecting to the server...");
+    	Socket socket = new Socket("localhost", 3434);
     	DataOutputStream dOut = new DataOutputStream(socket.getOutputStream());
     
     	//Number of files
@@ -67,11 +68,13 @@ public class Peer {
     	dOut.flush();
     	dOut.writeByte(-1);
     	dOut.flush();
-    	dOut.close();
+    	
     	
     	//Reading the Unique Id from the Server
     	DataInputStream dIn = new DataInputStream(socket.getInputStream());
     	this.peerId = dIn.readInt();
+    	
+    	dOut.close();
     	dIn.close();
     	
     	System.out.println("Running as Peer " + peerId + "!");
@@ -99,10 +102,10 @@ public class Peer {
     	
     	//TODO: create a thread for incoming requests (server side)
     	
-    	while(true){
+    	//while(true){
     		System.out.println("Select the option:");
     		System.out.println("1 - Lookup for a file");
-    	}
+    	//}
     }
 }
 

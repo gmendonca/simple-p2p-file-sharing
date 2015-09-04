@@ -14,16 +14,17 @@ public class CentralIndexingServer {
 	private static int id = 0;
 	
 	private static int getUniqueId(){
-		return id++;
+		return ++id;
 	}
 	
 	private static void server() throws IOException{
 		
-		ServerSocket serverSocket = new ServerSocket(2386);
+		ServerSocket serverSocket = new ServerSocket(3434);
 		
 		//while(true){
-			
+			System.out.println("Waiting for peer...");
 			Socket socket = serverSocket.accept();
+			System.out.println("bla...");
 			
 			//TODO: differentiate when is registering or looking up
 			
@@ -42,10 +43,12 @@ public class CentralIndexingServer {
 				 switch(messageType){
 				 	case 1:
 				 		numFiles = dIn.readInt();
+				 		System.out.println(numFiles);
 				 		break;
 				 	case 2:
 				 		for(int i = 0; i < numFiles; i++){
 				 			fileNames.add(dIn.readUTF());
+				 			System.out.println(fileNames.get(i));
 				 		}
 				 		break;
 				 	default:
