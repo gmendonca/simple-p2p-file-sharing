@@ -18,9 +18,11 @@ import util.Util;
 public class Peer {
 	
 	private int peerId;
-	private String directory;
-	private ArrayList<String> fileNames;
 	private int numFiles;
+	private ArrayList<String> fileNames;
+	private String directory;
+	private String address;
+	private int port;
 	
 	public Peer(String directory, ArrayList<String> fileNames, int numFiles){
 		this.directory = directory;
@@ -72,6 +74,15 @@ public class Peer {
     	dOut.writeByte(2);
     	for(String str : fileNames)
     		dOut.writeUTF(str);
+    	dOut.flush();
+    	dOut.writeByte(3);
+    	dOut.writeUTF(directory);
+    	dOut.flush();
+    	dOut.writeByte(4);
+    	dOut.writeUTF(address);
+    	dOut.flush();
+    	dOut.writeByte(5);
+    	dOut.writeInt(port);
     	dOut.flush();
     	dOut.writeByte(-1);
     	dOut.flush();

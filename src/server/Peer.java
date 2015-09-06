@@ -10,6 +10,7 @@ public class Peer {
 	private String address;
 	private int port;
 	//TODO: how to connect to the peer -address string is an example so far
+	//TODO: Should I use the same class as the client, maybe will be the same thing !!!!!!
 	
 	public Peer(int peerId, int numFiles, ArrayList<String> fileNames, String directory, String address, int port){
 		this.peerId = peerId;

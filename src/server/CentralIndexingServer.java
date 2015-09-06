@@ -41,7 +41,8 @@ public class CentralIndexingServer {
 					
 					Boolean end = false;
 					ArrayList<String> fileNames = new ArrayList<String>();
-					int numFiles = 0;
+					int numFiles = 0, port = 0;
+					String directory = null, address = null;
 					
 					while(!end){
 						byte messageType = dIn.readByte();
@@ -57,12 +58,21 @@ public class CentralIndexingServer {
 						 			System.out.println(fileNames.get(i));
 						 		}
 						 		break;
+						 	case 3:
+						 		directory = dIn.readUTF();
+						 		break;
+						 	case 4:
+						 		address = dIn.readUTF();
+						 		break;
+						 	case 5:
+						 		port = dIn.readInt();
+						 		break;
 						 	default:
 						 		end = true;
 						 }
 					}
 					
-					registry(peerId, fileNames);
+					registry(peerId, numFiles, fileNames, directory, address, port);
 					
 					DataOutputStream dOut = new DataOutputStream(socket.getOutputStream());
 					dOut.writeInt(peerId);
@@ -84,8 +94,9 @@ public class CentralIndexingServer {
 		}
 	}
 	
-	public static void registry(int peerId, ArrayList<String> fileNames){
+	public static void registry(int peerId, int numFiles, ArrayList<String> fileNames, String directory, String address, int port){
 		index.put(peerId, fileNames);
+		//TODO: has to change how this will be register, but I need to think how the search will be done first
 	}
 	
 	public static Boolean search(String fileName){
