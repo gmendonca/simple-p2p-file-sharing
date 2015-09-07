@@ -103,6 +103,7 @@ public class Peer {
     		}
     	} else if(found == 0){
     		System.out.println("File not found in the system");
+    		peerAddress = "";
     	}
     	
     	dOut.close();
@@ -156,7 +157,7 @@ public class Peer {
     	//TODO: create a thread for incoming requests (server side)
     	new Server(port, dir).start();
     	
-    	String peerAddress = "localhost";
+    	String peerAddress = "";
     	
     	Scanner scanner = new Scanner(System.in);
     	while(true){
@@ -172,11 +173,16 @@ public class Peer {
     			peerAddress = peer.lookup(fileName);
     		}
     		else if (option == 2){
-    			if(fileName != null){
+    			if(peerAddress.equals("")){
+    				System.out.println("Lookup for the peer first.");
+    			}
+    			else if(fileName == null){
     				System.out.println("Enter file name:");
         			fileName = scanner.next();
+        			peer.download(peerAddress, port, fileName);
+    			}else {
+    				peer.download(peerAddress, port, fileName);
     			}
-    			peer.download(peerAddress, port, fileName);
     		}else{
     			scanner.close();
     			System.out.println("Peer desconnected!");
