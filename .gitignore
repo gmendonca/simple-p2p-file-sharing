@@ -37,5 +37,5 @@ local.properties
 workload*
 
 # Tes files
-peer1/*
-peer2/*
+peer1/
+peer2/
