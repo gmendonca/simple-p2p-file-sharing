@@ -19,6 +19,14 @@ public class Server extends Thread {
 		}
 	}
 	
+	public static void newPeerList(){
+		peerList = new ArrayList<Peer>();
+	}
+	
+	public static void addPeer(Peer peer){
+		peerList.add(peer);
+	}
+	
 	public Server(Socket socket){
 		this.socket = socket;
 	}

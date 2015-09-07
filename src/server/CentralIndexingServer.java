@@ -11,8 +11,6 @@ public class CentralIndexingServer {
 	
 	private static int id = 0;
 	
-	private static ArrayList<Peer> peerList;
-	
 	@SuppressWarnings("unused")
 	private static int getUniqueId(){
 		return ++id;
@@ -37,10 +35,10 @@ public class CentralIndexingServer {
 	
 	public static Boolean search(String fileName){
 		Boolean found = false;
-		peerList = new ArrayList<Peer>();
+		Server.newPeerList();
 		 for (Peer p : index){
 			 if(p.searchFile(fileName)){
-				 peerList.add(p);
+				 Server.addPeer(p);
 				 found = true;
 			 }
 		 }
