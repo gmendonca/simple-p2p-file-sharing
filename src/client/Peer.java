@@ -35,9 +35,9 @@ public class Peer {
 		
 	}
     
-    private void register() throws IOException {
+    private void register(String serverAddress, int serverPort) throws IOException {
     	System.out.println("Connecting to the server...");
-    	Socket socket = new Socket("localhost", 3434);
+    	Socket socket = new Socket(serverAddress, serverPort);
     	DataOutputStream dOut = new DataOutputStream(socket.getOutputStream());
     	
     	//Option to register in the server (new peer)
@@ -112,16 +112,24 @@ public class Peer {
     	return peerAddress;
     }
     
-    public void download(String fileName)  throws IOException {
-    	Socket socket = new Socket("localhost", 3434);
+    public void download(String peerAddress, int port, String fileName)  throws IOException {
+    	Socket socket = new Socket(peerAddress, 3434);
+    	DataOutputStream dOut = new DataOutputStream(socket.getOutputStream());
+    	dOut.writeUTF(fileName);
         InputStream in = socket.getInputStream();
         OutputStream out = new FileOutputStream(fileName);
         Util.copy(in, out);
+        dOut.close();
         out.close();
         in.close();
+        socket.close();
     }
     
     public static void main(String[] args) throws IOException {
+    	
+    	//Server information
+    	String serverAddress = "localhost";
+    	int serverPort = 3434;
     	
     	String dir = args[0];
     	File folder = new File(dir);
@@ -140,9 +148,10 @@ public class Peer {
     	String address = InetAddress.getLocalHost().getHostAddress();
     	//TODO: ask the user for the port
     	int port = 3434;
+    	
     	ArrayList<String> fileNames = Util.listFilesForFolder(folder);
     	Peer peer = new Peer(dir, fileNames, fileNames.size(), address, port);
-    	peer.register();
+    	peer.register(serverAddress, serverPort);
     	
     	//TODO: create a thread for incoming requests (server side)
     	new Server(port, dir).start();
@@ -167,7 +176,7 @@ public class Peer {
     				System.out.println("Enter file name:");
         			fileName = scanner.next();
     			}
-    			peer.download(peerAddress, fileName);
+    			peer.download(peerAddress, port, fileName);
     		}else{
     			scanner.close();
     			System.out.println("Peer desconnected!");

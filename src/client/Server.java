@@ -1,5 +1,6 @@
 package client;
 
+import java.io.DataInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,11 +20,15 @@ public class Server extends Thread{
 	
 	public void run(){
 		try{
-			ServerSocket serverSocket = new ServerSocket(3434);
+			@SuppressWarnings("resource")
+			ServerSocket serverSocket = new ServerSocket(port);
 	        Socket socket = serverSocket.accept();
-	        InputStream in = new FileInputStream("test1.txt");
+	        DataInputStream dIn = new DataInputStream(socket.getInputStream());
+	        String fileName = dIn.readUTF();
+	        InputStream in = new FileInputStream(fileName);
 	        OutputStream out = socket.getOutputStream();
 	        Util.copy(in, out);
+	        dIn.close();
 	        out.close();
 	        in.close();
 		}catch (IOException ioe){
