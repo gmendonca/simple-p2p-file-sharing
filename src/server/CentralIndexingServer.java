@@ -28,82 +28,9 @@ public class CentralIndexingServer {
 		while(true){
 			System.out.println("Waiting for peer...");
 			Socket socket = serverSocket.accept();
-			System.out.println("Peer connected...");
-			
-			DataInputStream dIn = new DataInputStream(socket.getInputStream());
-			DataOutputStream dOut = new DataOutputStream(socket.getOutputStream());
-			
-			byte option = dIn.readByte();
-			
-			switch(option){
-				case 0:
-					//TODO: need to create an Object peer with more info, address and port
-					int peerId = getUniqueId();
-					
-					Boolean end = false;
-					ArrayList<String> fileNames = new ArrayList<String>();
-					int numFiles = 0, port = 0;
-					String directory = null, address = null;
-					
-					while(!end){
-						byte messageType = dIn.readByte();
-						
-						 switch(messageType){
-						 	case 1:
-						 		numFiles = dIn.readInt();
-						 		System.out.println(numFiles);
-						 		break;
-						 	case 2:
-						 		for(int i = 0; i < numFiles; i++){
-						 			fileNames.add(dIn.readUTF());
-						 			System.out.println(fileNames.get(i));
-						 		}
-						 		break;
-						 	case 3:
-						 		directory = dIn.readUTF();
-						 		break;
-						 	case 4:
-						 		address = dIn.readUTF();
-						 		break;
-						 	case 5:
-						 		port = dIn.readInt();
-						 		break;
-						 	default:
-						 		end = true;
-						 }
-					}
-					
-					registry(peerId, numFiles, fileNames, directory, address, port);
-					
-					
-					dOut.writeInt(peerId);
-					dOut.flush();
-					break;
-				case 1:
-					String fileName = dIn.readUTF();
-					
-					if(search(fileName)){
-						dOut.writeByte(1);
-						dOut.writeInt(peerList.size());
-						for(Peer p : peerList){
-							dOut.writeUTF(p.getAddress() + " " + p.getPort());
-							dOut.flush();
-						}
-						dOut.flush();
-					}else {
-						dOut.writeByte(0);
-					}
-					break;
-				default:					
-				
-			}
-				
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+			new Server(socket).start();
 		}
+		
 	}
 	
 	public static void registry(int peerId, int numFiles, ArrayList<String> fileNames, String directory, String address, int port){
