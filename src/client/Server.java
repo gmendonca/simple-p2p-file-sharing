@@ -5,28 +5,25 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.ServerSocket;
 import java.net.Socket;
 
 import util.Util;
 
 public class Server extends Thread{
 	
-	private int port;
+	private String directory;
+	private Socket socket;
 	
-	public Server(int port, String directory){
-		this.port = port;
+	public Server(Socket socket, String directory){
+		this.directory = directory;
+		this.socket = socket;
 	}
 	
 	public void run(){
 		try{
-			@SuppressWarnings("resource")
-			ServerSocket serverSocket = new ServerSocket(port);
-			System.out.println("Running server at " + port);
-	        Socket socket = serverSocket.accept();
 	        DataInputStream dIn = new DataInputStream(socket.getInputStream());
 	        String fileName = dIn.readUTF();
-	        InputStream in = new FileInputStream(fileName);
+	        InputStream in = new FileInputStream(directory + fileName);
 	        OutputStream out = socket.getOutputStream();
 	        Util.copy(in, out);
 	        dIn.close();

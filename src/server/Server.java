@@ -94,7 +94,7 @@ public class Server extends Thread {
 						dOut.writeByte(1);
 						dOut.writeInt(peerList.size());
 						for(Peer p : peerList){
-							dOut.writeUTF(p.getAddress() + " " + p.getPort());
+							dOut.writeUTF(p.getAddress() + ":" + p.getPort());
 							dOut.flush();
 						}
 						dOut.flush();

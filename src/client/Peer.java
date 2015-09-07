@@ -9,11 +9,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.InetAddress;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Scanner;
-
 import util.Util;
 
 
@@ -85,7 +85,7 @@ public class Peer {
     	//Option to look for a file
     	dOut.writeByte(1);
     	
-    	String peerAddress = "localhost";
+    	String peerAddress = "";
     	
     	//File name
     	dOut.writeUTF(fileName);
@@ -112,6 +112,19 @@ public class Peer {
     	socket.close();
     	return peerAddress;
     }
+    
+    private void server() throws IOException{
+		
+		@SuppressWarnings("resource")
+		ServerSocket serverSocket = new ServerSocket(port);
+		
+		while(true){
+			System.out.println("Waiting for peer...");
+			Socket socket = serverSocket.accept();
+			new Server(socket, directory).start();
+		}
+		
+	}
     
     public void download(String peerAddress, int port, String fileName)  throws IOException {
     	Socket socket = new Socket("localhost", port);
@@ -160,11 +173,18 @@ public class Peer {
     	}
     	
     	ArrayList<String> fileNames = Util.listFilesForFolder(folder);
-    	Peer peer = new Peer(dir, fileNames, fileNames.size(), address, port);
+    	final Peer peer = new Peer(dir, fileNames, fileNames.size(), address, port);
     	peer.register(serverAddress, serverPort);
     	
-    	//TODO: create a thread for incoming requests (server side)
-    	new Server(port, dir).start();
+    	new Thread(){
+    		public void run(){
+    			try {
+					peer.server();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+    		}
+    	}.start();
     	
     	String peerAddress = "";
     	
@@ -184,13 +204,9 @@ public class Peer {
     		else if (option == 2){
     			if(peerAddress.equals("")){
     				System.out.println("Lookup for the peer first.");
-    			}
-    			else if(fileName == null){
-    				System.out.println("Enter file name:");
-        			fileName = scanner.next();
-        			peer.download(peerAddress, port, fileName);
     			}else {
-    				peer.download(peerAddress, port, fileName);
+    				String[] addrport = peerAddress.split(":");
+    				peer.download(addrport[0], Integer.parseInt(addrport[1]), fileName);
     			}
     		}else{
     			scanner.close();
