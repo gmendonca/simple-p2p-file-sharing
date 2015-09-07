@@ -1,12 +1,8 @@
 package server;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 
 public class CentralIndexingServer {
@@ -17,12 +13,14 @@ public class CentralIndexingServer {
 	
 	private static ArrayList<Peer> peerList;
 	
+	@SuppressWarnings("unused")
 	private static int getUniqueId(){
 		return ++id;
 	}
 	
 	private static void server() throws IOException{
 		
+		@SuppressWarnings("resource")
 		ServerSocket serverSocket = new ServerSocket(3434);
 		
 		while(true){

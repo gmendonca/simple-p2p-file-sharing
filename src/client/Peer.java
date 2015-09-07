@@ -160,7 +160,7 @@ public class Peer {
     	System.out.println(br.readLine());
     	
     	String address = InetAddress.getLocalHost().getHostAddress();
-    	//TODO: ask for the port
+    	//TODO: ask the user for the port
     	int port = 3434;
     	ArrayList<String> fileNames = Util.listFilesForFolder(folder);
     	Peer peer = new Peer(dir, fileNames, fileNames.size(), address, port);
