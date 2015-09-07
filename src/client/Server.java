@@ -22,6 +22,7 @@ public class Server extends Thread{
 		try{
 			@SuppressWarnings("resource")
 			ServerSocket serverSocket = new ServerSocket(port);
+			System.out.println("Running server at " + port);
 	        Socket socket = serverSocket.accept();
 	        DataInputStream dIn = new DataInputStream(socket.getInputStream());
 	        String fileName = dIn.readUTF();

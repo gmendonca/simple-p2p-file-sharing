@@ -113,7 +113,7 @@ public class Peer {
     }
     
     public void download(String peerAddress, int port, String fileName)  throws IOException {
-    	Socket socket = new Socket(peerAddress, 3434);
+    	Socket socket = new Socket("localhost", port);
     	DataOutputStream dOut = new DataOutputStream(socket.getOutputStream());
     	dOut.writeUTF(fileName);
         InputStream in = socket.getInputStream();

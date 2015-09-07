@@ -35,3 +35,7 @@ local.properties
 *.jar
 
 workload*
+
+# Tes files
+peer1/*
+peer2/*
