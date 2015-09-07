@@ -1,4 +1,5 @@
-package cllient;
+package client;
+import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -6,9 +7,12 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -24,10 +28,12 @@ public class Peer {
 	private String address;
 	private int port;
 	
-	public Peer(String directory, ArrayList<String> fileNames, int numFiles){
+	public Peer(String directory, ArrayList<String> fileNames, int numFiles, String address, int port){
 		this.directory = directory;
 		this.fileNames = fileNames;
 		this.numFiles = numFiles;
+		this.address = address;
+		this.port = port;
 		
 	}
 	
@@ -112,17 +118,24 @@ public class Peer {
     	//File name
     	dOut.writeUTF(fileName);
     	dOut.flush();
-    	
+    	System.out.println("Reading from the server...");
     	//Reading the peer Address that has the file
-    	//TODO: add option for not found
     	DataInputStream dIn = new DataInputStream(socket.getInputStream());
-    	String peerAddress = dIn.readUTF();
+    	byte found = dIn.readByte();
+    	
+    	if(found == 1){
+    		int qt = dIn.readInt();
+    		for(int i = 0; i < qt; i++){
+    			String peerAddress = dIn.readUTF();
+    			System.out.println("Peer " + peerAddress + " has the file " + fileName + "!");
+    		}
+    	} else if(found == 0){
+    		System.out.println("File not found in the system");
+    	}
     	
     	dOut.close();
     	dIn.close();
 
-    	System.out.println("Peer " + peerAddress + " has the file " + fileName + "!");
-    	
     	socket.close();
     }
     
@@ -142,8 +155,15 @@ public class Peer {
 			return;
     	}
     	
+    	URL url = new URL("http://checkip.amazonaws.com/");
+    	BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
+    	System.out.println(br.readLine());
+    	
+    	String address = InetAddress.getLocalHost().getHostAddress();
+    	//TODO: ask for the port
+    	int port = 3434;
     	ArrayList<String> fileNames = Util.listFilesForFolder(folder);
-    	Peer peer = new Peer(dir, fileNames, fileNames.size());
+    	Peer peer = new Peer(dir, fileNames, fileNames.size(), address, port);
     	peer.register();
     	
     	//TODO: create a thread for incoming requests (server side)

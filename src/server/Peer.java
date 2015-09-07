@@ -75,5 +75,16 @@ public class Peer {
 	public void setPort(int port){
 		this.port = port;
 	}
+	
+	//methods
+	
+	public Boolean searchFile(String fileName){
+		for(String fn : fileNames){
+			if(fn.equals(fileName)){
+				return true;
+			}
+		}
+		return false;
+	}
 
 }

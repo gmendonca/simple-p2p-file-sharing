@@ -11,11 +11,11 @@ import java.util.Map;
 
 public class CentralIndexingServer {
 	
-	private static HashMap<Integer,ArrayList<String>> index;
+	private static ArrayList<Peer> index;
 	
 	private static int id = 0;
 	
-	private static ArrayList<Integer> peerList;
+	private static ArrayList<Peer> peerList;
 	
 	private static int getUniqueId(){
 		return ++id;
@@ -31,6 +31,7 @@ public class CentralIndexingServer {
 			System.out.println("Peer connected...");
 			
 			DataInputStream dIn = new DataInputStream(socket.getInputStream());
+			DataOutputStream dOut = new DataOutputStream(socket.getOutputStream());
 			
 			byte option = dIn.readByte();
 			
@@ -74,13 +75,24 @@ public class CentralIndexingServer {
 					
 					registry(peerId, numFiles, fileNames, directory, address, port);
 					
-					DataOutputStream dOut = new DataOutputStream(socket.getOutputStream());
+					
 					dOut.writeInt(peerId);
 					dOut.flush();
 					break;
 				case 1:
 					String fileName = dIn.readUTF();
-					search(fileName);
+					
+					if(search(fileName)){
+						dOut.writeByte(1);
+						dOut.writeInt(peerList.size());
+						for(Peer p : peerList){
+							dOut.writeUTF(p.getAddress() + " " + p.getPort());
+							dOut.flush();
+						}
+						dOut.flush();
+					}else {
+						dOut.writeByte(0);
+					}
 					break;
 				default:					
 				
@@ -95,20 +107,16 @@ public class CentralIndexingServer {
 	}
 	
 	public static void registry(int peerId, int numFiles, ArrayList<String> fileNames, String directory, String address, int port){
-		index.put(peerId, fileNames);
-		//TODO: has to change how this will be register, but I need to think how the search will be done first
+		index.add(new Peer(peerId, numFiles, fileNames, directory, address, port));
 	}
 	
 	public static Boolean search(String fileName){
 		Boolean found = false;
-		peerList = new ArrayList<Integer>();
-		 for (Map.Entry<Integer, ArrayList<String>> entry  : index.entrySet()){
-			 for(String fn : entry.getValue()){
-				 if(fn == fileName){
-					 found = true;
-					 peerList.add(entry.getKey());
-					 //TODO: it has to be the address not the id, create a peer class
-				 }
+		peerList = new ArrayList<Peer>();
+		 for (Peer p : index){
+			 if(p.searchFile(fileName)){
+				 peerList.add(p);
+				 found = true;
 			 }
 		 }
 		 return found;
@@ -116,7 +124,7 @@ public class CentralIndexingServer {
 	
 	public static void main(String[] args) throws IOException {
 		
-		index = new HashMap<Integer,ArrayList<String>>();
+		index = new ArrayList<Peer>();
 		
 		new Thread() {
             public void run() {
