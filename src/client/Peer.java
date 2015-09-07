@@ -128,6 +128,11 @@ public class Peer {
     
     public static void main(String[] args) throws IOException {
     	
+    	
+    	if(args.length < 2){
+    		System.out.println("It should be java/client folder port");
+    		return;
+    	}
     	//Server information
     	String serverAddress = "localhost";
     	int serverPort = 3434;
@@ -147,8 +152,12 @@ public class Peer {
     	System.out.println(br.readLine());
     	
     	String address = InetAddress.getLocalHost().getHostAddress();
-    	//TODO: ask the user for the port
-    	int port = Integer.parseInt(args[1]);
+    	int port = 3434;
+    	try{
+    		port = Integer.parseInt(args[1]);
+    	} catch (Exception e){
+    		System.out.println("Put a valid port number");
+    	}
     	
     	ArrayList<String> fileNames = Util.listFilesForFolder(folder);
     	Peer peer = new Peer(dir, fileNames, fileNames.size(), address, port);
