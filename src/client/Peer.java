@@ -147,7 +147,7 @@ public class Peer {
     	
     	String address = InetAddress.getLocalHost().getHostAddress();
     	//TODO: ask the user for the port
-    	int port = 3434;
+    	int port = Integer.parseInt(args[1]);
     	
     	ArrayList<String> fileNames = Util.listFilesForFolder(folder);
     	Peer peer = new Peer(dir, fileNames, fileNames.size(), address, port);
