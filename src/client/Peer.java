@@ -3,14 +3,12 @@ import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.InetAddress;
-import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URL;
 import java.util.ArrayList;
@@ -36,33 +34,6 @@ public class Peer {
 		this.port = port;
 		
 	}
-	
-	public void server() throws IOException {
-        ServerSocket serverSocket = new ServerSocket(3434);
-        Socket socket = serverSocket.accept();
-        InputStream in = new FileInputStream("test1.txt");
-        OutputStream out = socket.getOutputStream();
-        copy(in, out);
-        out.close();
-        in.close();
-    }
-
-    public void client() throws IOException {
-        Socket socket = new Socket("localhost", 3434);
-        InputStream in = socket.getInputStream();
-        OutputStream out = new FileOutputStream("test2.txt");
-        copy(in, out);
-        out.close();
-        in.close();
-    }
-
-    private void copy(InputStream in, OutputStream out) throws IOException {
-        byte[] buffer = new byte[1024];
-        int count = 0;
-        while ((count = in.read(buffer)) != -1) {
-            out.write(buffer, 0, count);
-        }
-    }
     
     private void register() throws IOException {
     	System.out.println("Connecting to the server...");
@@ -106,7 +77,7 @@ public class Peer {
     	socket.close();
 	}
 
-    public void lookup(String fileName) throws IOException{
+    public String lookup(String fileName) throws IOException{
     	System.out.println("Connecting to the server...");
     	Socket socket = new Socket("localhost", 3434);
     	DataOutputStream dOut = new DataOutputStream(socket.getOutputStream());
@@ -114,6 +85,7 @@ public class Peer {
     	//Option to look for a file
     	dOut.writeByte(1);
     	
+    	String peerAddress = "localhost";
     	
     	//File name
     	dOut.writeUTF(fileName);
@@ -126,7 +98,7 @@ public class Peer {
     	if(found == 1){
     		int qt = dIn.readInt();
     		for(int i = 0; i < qt; i++){
-    			String peerAddress = dIn.readUTF();
+    			peerAddress = dIn.readUTF();
     			System.out.println("Peer " + peerAddress + " has the file " + fileName + "!");
     		}
     	} else if(found == 0){
@@ -137,10 +109,16 @@ public class Peer {
     	dIn.close();
 
     	socket.close();
+    	return peerAddress;
     }
     
-    public void download(){
-    	
+    public void download(String fileName)  throws IOException {
+    	Socket socket = new Socket("localhost", 3434);
+        InputStream in = socket.getInputStream();
+        OutputStream out = new FileOutputStream(fileName);
+        Util.copy(in, out);
+        out.close();
+        in.close();
     }
     
     public static void main(String[] args) throws IOException {
@@ -148,7 +126,7 @@ public class Peer {
     	String dir = args[0];
     	File folder = new File(dir);
     	int option;
-    	String fileName;
+    	String fileName = null;
     	
     	if(!folder.isDirectory()){
 			System.out.println("Put a valid directory name");
@@ -167,7 +145,9 @@ public class Peer {
     	peer.register();
     	
     	//TODO: create a thread for incoming requests (server side)
+    	new Server(port, dir).start();
     	
+    	String peerAddress = "localhost";
     	
     	Scanner scanner = new Scanner(System.in);
     	while(true){
@@ -180,10 +160,14 @@ public class Peer {
     		if(option == 1){
     			System.out.println("Enter file name:");
     			fileName = scanner.next();
-    			peer.lookup(fileName);
+    			peerAddress = peer.lookup(fileName);
     		}
     		else if (option == 2){
-    			peer.download();
+    			if(fileName != null){
+    				System.out.println("Enter file name:");
+        			fileName = scanner.next();
+    			}
+    			peer.download(peerAddress, fileName);
     		}else{
     			scanner.close();
     			System.out.println("Peer desconnected!");
