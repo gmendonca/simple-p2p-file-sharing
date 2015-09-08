@@ -100,7 +100,7 @@ public class Peer {
     		peerAddress = new String[qt];
     		for(int i = 0; i < qt; i++){
     			peerAddress[i] = dIn.readUTF();
-    			System.out.println("Peer " + peerAddress + " has the file " + fileName + "!");
+    			System.out.println("Peer " + peerAddress[i] + " has the file " + fileName + "!");
     		}
     	} else if(found == 0){
     		System.out.println("File not found in the system");
@@ -134,6 +134,7 @@ public class Peer {
         InputStream in = socket.getInputStream();
         OutputStream out = new FileOutputStream(fileName);
         Util.copy(in, out);
+        System.out.println("File " + fileName + " recieved from peer " + peerAddress + ":" + port);
         dOut.close();
         out.close();
         in.close();
