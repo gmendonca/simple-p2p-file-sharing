@@ -77,7 +77,7 @@ public class Peer {
     	socket.close();
 	}
 
-    public String lookup(String fileName) throws IOException{
+    public String[] lookup(String fileName) throws IOException{
     	System.out.println("Connecting to the server...");
     	Socket socket = new Socket("localhost", 3434);
     	DataOutputStream dOut = new DataOutputStream(socket.getOutputStream());
@@ -85,7 +85,7 @@ public class Peer {
     	//Option to look for a file
     	dOut.writeByte(1);
     	
-    	String peerAddress = "";
+    	String [] peerAddress = new String[0];
     	
     	//File name
     	dOut.writeUTF(fileName);
@@ -97,13 +97,14 @@ public class Peer {
     	
     	if(found == 1){
     		int qt = dIn.readInt();
+    		peerAddress = new String[qt];
     		for(int i = 0; i < qt; i++){
-    			peerAddress = dIn.readUTF();
+    			peerAddress[i] = dIn.readUTF();
     			System.out.println("Peer " + peerAddress + " has the file " + fileName + "!");
     		}
     	} else if(found == 0){
     		System.out.println("File not found in the system");
-    		peerAddress = "";
+    		peerAddress = new String[0];
     	}
     	
     	dOut.close();
@@ -186,7 +187,7 @@ public class Peer {
     		}
     	}.start();
     	
-    	String peerAddress = "";
+    	String [] peerAddress = new String[0];
     	
     	Scanner scanner = new Scanner(System.in);
     	while(true){
@@ -195,6 +196,7 @@ public class Peer {
     		System.out.println("2 - Download file");
     		
     		option = scanner.nextInt();
+    		int optpeer;
     		
     		if(option == 1){
     			System.out.println("Enter file name:");
@@ -202,10 +204,22 @@ public class Peer {
     			peerAddress = peer.lookup(fileName);
     		}
     		else if (option == 2){
-    			if(peerAddress.equals("")){
+    			if(peerAddress.length == 0){
     				System.out.println("Lookup for the peer first.");
+    			}else if(peerAddress.length == 1){
+    				String[] addrport = peerAddress[0].split(":");
+    				peer.download(addrport[0], Integer.parseInt(addrport[1]), fileName);
     			}else {
-    				String[] addrport = peerAddress.split(":");
+    				System.out.println("Select from which peer you want to Download the file:");
+    				for(int i = 0; i < peerAddress.length; i++){
+    					System.out.println((i+1) + " - " + peerAddress[i]);
+    				}
+    				optpeer = scanner.nextInt();
+    				while(optpeer > peerAddress.length || optpeer < 1){
+    					System.out.println("Select a valid option:");
+    					optpeer = scanner.nextInt();
+    				}
+    				String[] addrport = peerAddress[optpeer-1].split(":");
     				peer.download(addrport[0], Integer.parseInt(addrport[1]), fileName);
     			}
     		}else{
