@@ -43,7 +43,6 @@ public class Server extends Thread {
 			
 			switch(option){
 				case 0:
-					//TODO: need to create an Object peer with more info, address and port
 					int peerId = getUniqueId();
 					
 					Boolean end = false;
