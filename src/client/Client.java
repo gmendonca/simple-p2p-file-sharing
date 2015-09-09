@@ -48,9 +48,8 @@ public class Client {
     	}
     	
     	ArrayList<String> fileNames = Util.listFilesForFolder(folder);
-    	Socket socket = new Socket(serverAddress, serverPort);
-    	final Peer peer = new Peer(dir, fileNames, fileNames.size(), address, port, socket);
-    	peer.register();
+    	final Peer peer = new Peer(dir, fileNames, fileNames.size(), address, port);
+    	peer.register(new Socket(serverAddress, serverPort));
     	
     	new Thread(){
     		public void run(){
@@ -76,7 +75,7 @@ public class Client {
     		if(option == 1){
     			System.out.println("Enter file name:");
     			fileName = scanner.next();
-				peerAddress = peer.lookup(fileName);
+				peerAddress = peer.lookup(fileName, new Socket(serverAddress, serverPort));
     		}
     		else if (option == 2){
     			if(peerAddress.length == 0){

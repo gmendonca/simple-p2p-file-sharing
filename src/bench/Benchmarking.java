@@ -14,6 +14,9 @@ import client.Peer;
 
 public class Benchmarking {
 	
+	private static String serverAddress = "localhost";
+	private static int serverPort = 3434;
+	
 	
 	public static void sendRequests(Peer peer, String fileName, int numRequests) throws IOException{
 		long startTime = System.currentTimeMillis();
@@ -22,7 +25,7 @@ public class Benchmarking {
 		long start;
 		for(int i = 0; i < numRequests; i++){
 			start = System.currentTimeMillis();
-			peer.lookup(fileName);
+			peer.lookup(fileName, new Socket(serverAddress, serverPort));
 			//System.out.println("Took " + (System.currentTimeMillis() - start) + " ms.");
 		}
 		
@@ -68,9 +71,8 @@ public class Benchmarking {
     	}
     	
     	ArrayList<String> fileNames = Util.listFilesForFolder(folder);
-    	Socket socket = new Socket(serverAddress, serverPort);
-    	final Peer peer = new Peer(dir, fileNames, fileNames.size(), address, port, socket);
-    	peer.register();
+    	final Peer peer = new Peer(dir, fileNames, fileNames.size(), address, port);
+    	peer.register(new Socket(serverAddress, serverPort));
     	
     	try {
 			Thread.sleep(10);

@@ -20,18 +20,13 @@ public class Peer {
 	private String directory;
 	private String address;
 	private int port;
-	private DataOutputStream dOut;
-	private DataInputStream dIn;
 	
-	public Peer(String directory, ArrayList<String> fileNames, int numFiles, String address, int port, Socket socket) throws IOException{
+	public Peer(String directory, ArrayList<String> fileNames, int numFiles, String address, int port) throws IOException{
 		this.directory = directory;
 		this.fileNames = fileNames;
 		this.numFiles = numFiles;
 		this.address = address;
 		this.port = port;
-		
-		dOut = new DataOutputStream(socket.getOutputStream());
-		dIn = new DataInputStream(socket.getInputStream());
 	}
 	
 	//getters
@@ -88,12 +83,13 @@ public class Peer {
 			this.port = port;
 		}
     
-    public void register() throws IOException {
+    public void register(Socket socket) throws IOException {
     	System.out.println("Connecting to the server...");
-    	//DataOutputStream dOut = new DataOutputStream(socket.getOutputStream());
+    	DataOutputStream dOut = new DataOutputStream(socket.getOutputStream());
     	
     	//Option to register in the server (new peer)
     	dOut.writeByte(0);
+    	dOut.flush();
     
     	//Number of files
     	dOut.writeByte(1);
@@ -118,17 +114,18 @@ public class Peer {
     	
     	
     	//Reading the Unique Id from the Server
-    	//DataInputStream dIn = new DataInputStream(socket.getInputStream());
+    	DataInputStream dIn = new DataInputStream(socket.getInputStream());
     	this.peerId = dIn.readInt();
     	
-    	//dOut.close();
-    	//dIn.close();
+    	dOut.close();
+    	dIn.close();
+    	socket.close();
     	
     	System.out.println("Running as Peer " + peerId + "!");
 	}
 
-    public String[] lookup(String fileName) throws IOException{
-    	//DataOutputStream dOut = new DataOutputStream(socket.getOutputStream());
+    public String[] lookup(String fileName, Socket socket) throws IOException{
+    	DataOutputStream dOut = new DataOutputStream(socket.getOutputStream());
     	
     	//Option to look for a file
     	dOut.writeByte(1);
@@ -141,31 +138,32 @@ public class Peer {
     	//System.out.println("Reading from the server...");
     	
     	//Reading the peer Address that has the file
-    	//DataInputStream dIn = new DataInputStream(socket.getInputStream());
+    	DataInputStream dIn = new DataInputStream(socket.getInputStream());
     	byte found = 0;
-    	while(dIn.available() > 0)
+    	//while(dIn.available() > 0)
     		found = dIn.readByte();
     	
     	if(found == 1){
     		int qt = 0;
     		
-    		while(dIn.available() > 0)
+    		//while(dIn.available() > 0)
     			qt = dIn.readInt();
     		
     		peerAddress = new String[qt];
     		
     		for(int i = 0; i < qt; i++){
-    			while(dIn.available() > 0)
+    			//while(dIn.available() > 0)
     				peerAddress[i] = dIn.readUTF();
-    			//System.out.println("Peer " + peerAddress[i] + " has the file " + fileName + "!");
+    			System.out.println("Peer " + peerAddress[i] + " has the file " + fileName + "!");
     		}
     	} else if(found == 0){
-    		//System.out.println("File not found in the system");
+    		System.out.println("File not found in the system");
     		peerAddress = new String[0];
     	}
     	
-    	//dOut.close();
-    	//dIn.close();
+    	dOut.close();
+    	dIn.close();
+    	socket.close();
     	return peerAddress;
     }
     
