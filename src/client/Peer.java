@@ -8,6 +8,7 @@ import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+
 import util.Util;
 
 
@@ -28,6 +29,60 @@ public class Peer {
 		this.port = port;
 		
 	}
+	
+	//getters
+		public int getPeerId(){
+			return peerId;
+		}
+		
+		public int getNumFiles(){
+			return numFiles;
+		}
+		
+		public ArrayList<String> getFileNames(){
+			return fileNames;
+		}
+		
+		public String getDirectory(){
+			return directory;
+		}
+		
+		public String getAddress(){
+			return address;
+		}
+		
+		public int getPort(){
+			return port;
+		}
+		
+		//setters
+		public void setPeerId(int peerId){
+			this.peerId = peerId;
+		}
+		
+		public void setNumFiles(int numFiles){
+			this.numFiles = numFiles;
+		}
+		
+		public void setFileNames(ArrayList<String> fileNames){
+			this.fileNames.addAll(fileNames);
+		}
+		
+		public void addFileName(String fileName){
+			this.fileNames.add(fileName);
+		}
+		
+		public void setDirectory(String directory){
+			this.directory = directory;
+		}
+		
+		public void setAddress(String address){
+			this.address = address;
+		}
+		
+		public void setPort(int port){
+			this.port = port;
+		}
     
     public void register(String serverAddress, int serverPort) throws IOException {
     	System.out.println("Connecting to the server...");
@@ -72,7 +127,7 @@ public class Peer {
 	}
 
     public String[] lookup(String fileName) throws IOException{
-    	System.out.println("Connecting to the server...");
+    	//System.out.println("Connecting to the server...");
     	Socket socket = new Socket("localhost", 3434);
     	DataOutputStream dOut = new DataOutputStream(socket.getOutputStream());
     	
@@ -84,7 +139,8 @@ public class Peer {
     	//File name
     	dOut.writeUTF(fileName);
     	dOut.flush();
-    	System.out.println("Reading from the server...");
+    	//System.out.println("Reading from the server...");
+    	
     	//Reading the peer Address that has the file
     	DataInputStream dIn = new DataInputStream(socket.getInputStream());
     	byte found = dIn.readByte();
@@ -94,10 +150,10 @@ public class Peer {
     		peerAddress = new String[qt];
     		for(int i = 0; i < qt; i++){
     			peerAddress[i] = dIn.readUTF();
-    			System.out.println("Peer " + peerAddress[i] + " has the file " + fileName + "!");
+    			//System.out.println("Peer " + peerAddress[i] + " has the file " + fileName + "!");
     		}
     	} else if(found == 0){
-    		System.out.println("File not found in the system");
+    		//System.out.println("File not found in the system");
     		peerAddress = new String[0];
     	}
     	

@@ -26,4 +26,8 @@ public class Util {
             out.write(buffer, 0, count);
         }
     }
+	
+	public static long toSeconds(long start, long end){
+		return (end-start)/1000;
+	}
 }

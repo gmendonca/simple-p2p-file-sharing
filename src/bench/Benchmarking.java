@@ -12,6 +12,28 @@ import util.Util;
 import client.Peer;
 
 public class Benchmarking {
+	
+	
+	public static void sendRequests(Peer peer, String fileName, int numRequests) throws IOException{
+		long startTime = System.currentTimeMillis();
+		
+		@SuppressWarnings("unused")
+		long start;
+		for(int i = 0; i < numRequests; i++){
+			start = System.currentTimeMillis();
+			peer.lookup(fileName);
+			//System.out.println("Took " + (System.currentTimeMillis() - start) + " ms.");
+		}
+		
+		long stopTime = System.currentTimeMillis();
+		
+		//System.out.println("Overall -> Took " + Util.toSeconds(startTime, stopTime) + " s.");
+		System.out.println("==============================================================================================");
+		System.out.println("Overall - Peer " + peer.getPeerId() + " -> Took " + (stopTime-startTime) + " ms.");
+		System.out.println("==============================================================================================");
+		
+		
+	}
 
 	public static void main(String[] args) throws IOException {
     	
@@ -58,6 +80,8 @@ public class Benchmarking {
     		}
     	}.start();
     	
+    	String fileName = args[2];
     	
+    	sendRequests(peer, fileName, 1000);
     }
 }
