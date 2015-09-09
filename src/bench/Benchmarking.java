@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.InetAddress;
+import java.net.Socket;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -67,10 +68,17 @@ public class Benchmarking {
     	}
     	
     	ArrayList<String> fileNames = Util.listFilesForFolder(folder);
-    	final Peer peer = new Peer(dir, fileNames, fileNames.size(), address, port);
-    	peer.register(serverAddress, serverPort);
+    	Socket socket = new Socket(serverAddress, serverPort);
+    	final Peer peer = new Peer(dir, fileNames, fileNames.size(), address, port, socket);
+    	peer.register();
     	
-    	new Thread(){
+    	try {
+			Thread.sleep(10);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+    	
+    	/*new Thread(){
     		public void run(){
     			try {
 					peer.server();
@@ -78,7 +86,7 @@ public class Benchmarking {
 					e.printStackTrace();
 				}
     		}
-    	}.start();
+    	}.start();*/
     	
     	String fileName = args[2];
     	

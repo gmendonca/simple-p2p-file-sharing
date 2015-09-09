@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.InetAddress;
+import java.net.Socket;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -47,8 +48,9 @@ public class Client {
     	}
     	
     	ArrayList<String> fileNames = Util.listFilesForFolder(folder);
-    	final Peer peer = new Peer(dir, fileNames, fileNames.size(), address, port);
-    	peer.register(serverAddress, serverPort);
+    	Socket socket = new Socket(serverAddress, serverPort);
+    	final Peer peer = new Peer(dir, fileNames, fileNames.size(), address, port, socket);
+    	peer.register();
     	
     	new Thread(){
     		public void run(){
@@ -74,7 +76,7 @@ public class Client {
     		if(option == 1){
     			System.out.println("Enter file name:");
     			fileName = scanner.next();
-    			peerAddress = peer.lookup(fileName);
+				peerAddress = peer.lookup(fileName);
     		}
     		else if (option == 2){
     			if(peerAddress.length == 0){
