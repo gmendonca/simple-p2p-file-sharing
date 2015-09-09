@@ -139,22 +139,16 @@ public class Peer {
     	
     	//Reading the peer Address that has the file
     	DataInputStream dIn = new DataInputStream(socket.getInputStream());
-    	byte found = 0;
-    	//while(dIn.available() > 0)
-    		found = dIn.readByte();
+    	byte found = dIn.readByte();
     	
     	if(found == 1){
-    		int qt = 0;
-    		
-    		//while(dIn.available() > 0)
-    			qt = dIn.readInt();
+    		int qt = dIn.readInt();
     		
     		peerAddress = new String[qt];
     		
     		for(int i = 0; i < qt; i++){
-    			//while(dIn.available() > 0)
-    				peerAddress[i] = dIn.readUTF();
-    			System.out.println("Peer " + peerAddress[i] + " has the file " + fileName + "!");
+    			peerAddress[i] = dIn.readUTF();
+    			//System.out.println("Peer " + peerAddress[i] + " has the file " + fileName + "!");
     		}
     	} else if(found == 0){
     		System.out.println("File not found in the system");
