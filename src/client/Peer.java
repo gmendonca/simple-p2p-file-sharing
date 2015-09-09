@@ -121,8 +121,8 @@ public class Peer {
     	//DataInputStream dIn = new DataInputStream(socket.getInputStream());
     	this.peerId = dIn.readInt();
     	
-    	dOut.close();
-    	dIn.close();
+    	//dOut.close();
+    	//dIn.close();
     	
     	System.out.println("Running as Peer " + peerId + "!");
 	}
@@ -164,8 +164,8 @@ public class Peer {
     		peerAddress = new String[0];
     	}
     	
-    	dOut.close();
-    	dIn.close();
+    	//dOut.close();
+    	//dIn.close();
     	return peerAddress;
     }
     
