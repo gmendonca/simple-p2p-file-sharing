@@ -20,15 +20,18 @@ public class Peer {
 	private String directory;
 	private String address;
 	private int port;
-	private Socket socket;
+	private DataOutputStream dOut;
+	private DataInputStream dIn;
 	
-	public Peer(String directory, ArrayList<String> fileNames, int numFiles, String address, int port, Socket socket){
+	public Peer(String directory, ArrayList<String> fileNames, int numFiles, String address, int port, Socket socket) throws IOException{
 		this.directory = directory;
 		this.fileNames = fileNames;
 		this.numFiles = numFiles;
 		this.address = address;
 		this.port = port;
-		this.socket = socket;
+		
+		dOut = new DataOutputStream(socket.getOutputStream());
+		dIn = new DataInputStream(socket.getInputStream());
 	}
 	
 	//getters
@@ -87,7 +90,7 @@ public class Peer {
     
     public void register() throws IOException {
     	System.out.println("Connecting to the server...");
-    	DataOutputStream dOut = new DataOutputStream(socket.getOutputStream());
+    	//DataOutputStream dOut = new DataOutputStream(socket.getOutputStream());
     	
     	//Option to register in the server (new peer)
     	dOut.writeByte(0);
@@ -115,7 +118,7 @@ public class Peer {
     	
     	
     	//Reading the Unique Id from the Server
-    	DataInputStream dIn = new DataInputStream(socket.getInputStream());
+    	//DataInputStream dIn = new DataInputStream(socket.getInputStream());
     	this.peerId = dIn.readInt();
     	
     	dOut.close();
@@ -125,8 +128,7 @@ public class Peer {
 	}
 
     public String[] lookup(String fileName) throws IOException{
-    	//System.out.println("Connecting to the server...");
-    	DataOutputStream dOut = new DataOutputStream(socket.getOutputStream());
+    	//DataOutputStream dOut = new DataOutputStream(socket.getOutputStream());
     	
     	//Option to look for a file
     	dOut.writeByte(1);
@@ -139,7 +141,7 @@ public class Peer {
     	//System.out.println("Reading from the server...");
     	
     	//Reading the peer Address that has the file
-    	DataInputStream dIn = new DataInputStream(socket.getInputStream());
+    	//DataInputStream dIn = new DataInputStream(socket.getInputStream());
     	byte found = 0;
     	while(dIn.available() > 0)
     		found = dIn.readByte();
