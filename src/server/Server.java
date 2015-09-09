@@ -19,11 +19,11 @@ public class Server extends Thread {
 		}
 	}
 	
-	public static void newPeerList(){
+	public void newPeerList(){
 		peerList = new ArrayList<Peer>();
 	}
 	
-	public static void addPeer(Peer peer){
+	public void addPeer(Peer peer){
 		peerList.add(peer);
 	}
 	
@@ -31,10 +31,22 @@ public class Server extends Thread {
 		this.socket = socket;
 	}
 	
+	public Boolean search(String fileName){
+		Boolean found = false;
+		newPeerList();
+		 for (Peer p : CentralIndexingServer.getIndex()){
+			 if(p.searchFile(fileName)){
+				 addPeer(p);
+				 found = true;
+			 }
+		 }
+		 return found;
+	}
+	
 	public void run(){
 		
 		try{
-			System.out.println("Peer connected...");
+			//System.out.println("Peer connected...");
 			
 			DataInputStream dIn = new DataInputStream(socket.getInputStream());
 			DataOutputStream dOut = new DataOutputStream(socket.getOutputStream());
@@ -88,17 +100,25 @@ public class Server extends Thread {
 					break;
 				case 1:
 					String fileName = dIn.readUTF();
-					
-					if(CentralIndexingServer.search(fileName)){
-						dOut.writeByte(1);
+					System.out.println(dIn.readUTF());
+					Boolean b = search(fileName);
+					//TODO: see if I can do this with wait and notify, or find a better time and took it out from the overall time
+					try {
+						Thread.sleep(1);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					if(b){
+						dOut.writeByte(5);
 						dOut.writeInt(peerList.size());
+						dOut.flush();
 						for(Peer p : peerList){
 							dOut.writeUTF(p.getAddress() + ":" + p.getPort());
 							dOut.flush();
 						}
-						dOut.flush();
 					}else {
 						dOut.writeByte(0);
+						dOut.flush();
 					}
 					break;
 				default:					

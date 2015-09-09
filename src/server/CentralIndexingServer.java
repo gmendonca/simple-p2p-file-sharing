@@ -9,6 +9,10 @@ public class CentralIndexingServer {
 	
 	private static ArrayList<Peer> index;
 	
+	public static ArrayList<Peer> getIndex(){
+		return index;
+	}
+	
 	private static int id = 0;
 	
 	@SuppressWarnings("unused")
@@ -22,7 +26,7 @@ public class CentralIndexingServer {
 		ServerSocket serverSocket = new ServerSocket(3434);
 		
 		while(true){
-			System.out.println("Waiting for peer...");
+			//System.out.println("Waiting for peer...");
 			Socket socket = serverSocket.accept();
 			new Server(socket).start();
 		}
@@ -31,18 +35,6 @@ public class CentralIndexingServer {
 	
 	public static void registry(int peerId, int numFiles, ArrayList<String> fileNames, String directory, String address, int port){
 		index.add(new Peer(peerId, numFiles, fileNames, directory, address, port));
-	}
-	
-	public static Boolean search(String fileName){
-		Boolean found = false;
-		Server.newPeerList();
-		 for (Peer p : index){
-			 if(p.searchFile(fileName)){
-				 Server.addPeer(p);
-				 found = true;
-			 }
-		 }
-		 return found;
 	}
 	
 	public static void main(String[] args) throws IOException {

@@ -75,7 +75,7 @@ public class Client {
     		if(option == 1){
     			System.out.println("Enter file name:");
     			fileName = scanner.next();
-				peerAddress = peer.lookup(fileName, new Socket(serverAddress, serverPort));
+				peerAddress = peer.lookup(fileName, new Socket(serverAddress, serverPort), 1);
     		}
     		else if (option == 2){
     			if(peerAddress.length == 0){

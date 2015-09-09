@@ -1,6 +1,7 @@
 package client;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.EOFException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -124,7 +125,7 @@ public class Peer {
     	System.out.println("Running as Peer " + peerId + "!");
 	}
 
-    public String[] lookup(String fileName, Socket socket) throws IOException{
+    public String[] lookup(String fileName, Socket socket, int count) throws IOException{
     	DataOutputStream dOut = new DataOutputStream(socket.getOutputStream());
     	
     	//Option to look for a file
@@ -137,6 +138,9 @@ public class Peer {
     	dOut.flush();
     	//System.out.println("Reading from the server...");
     	
+    	dOut.writeUTF("Peer " + peerId + " - looking for file. (" + count + ")");
+    	dOut.flush();
+    	
     	//Reading the peer Address that has the file
     	DataInputStream dIn = new DataInputStream(socket.getInputStream());
     	byte found = dIn.readByte();
@@ -147,7 +151,11 @@ public class Peer {
     		peerAddress = new String[qt];
     		
     		for(int i = 0; i < qt; i++){
-    			peerAddress[i] = dIn.readUTF();
+    			try{
+    			 peerAddress[i] = dIn.readUTF();
+    			}catch (EOFException e){
+    				i--;
+    			}
     			//System.out.println("Peer " + peerAddress[i] + " has the file " + fileName + "!");
     		}
     	} else if(found == 0){

@@ -25,7 +25,7 @@ public class Benchmarking {
 		long start;
 		for(int i = 0; i < numRequests; i++){
 			start = System.currentTimeMillis();
-			peer.lookup(fileName, new Socket(serverAddress, serverPort));
+			peer.lookup(fileName, new Socket(serverAddress, serverPort), i);
 			//System.out.println("Took " + (System.currentTimeMillis() - start) + " ms.");
 		}
 		
@@ -92,6 +92,6 @@ public class Benchmarking {
     	
     	String fileName = args[2];
     	
-    	sendRequests(peer, fileName, 1000);
+    	sendRequests(peer, fileName, 100);
     }
 }
