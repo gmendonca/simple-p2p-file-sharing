@@ -2,7 +2,7 @@
 
 compile()
 {
-    javac server/*.java client/*.java bench/*.java util/*.java
+    javac -d bin/ src/server/*.java src/client/*.java src/bench/*.java src/util/*.java
 }
 
 
@@ -22,11 +22,12 @@ benchmarking()
 {
     N=$1
     PORT=13000
-    FILENAME=$2
-    NUMREQUESTS=$3
+    FOLDERNAME=$2
+    FILENAME=$3
+    NUMREQUESTS=$4
 
-    for ((i=0; i<=N; i++)); do
-        java bench/Benchmarking peer1/ $(($PORT+$i)) $FILENAME $NUMREQUESTS &
+    for ((i=0; i<N; i++)); do
+        java bench/Benchmarking $FOLDERNAME $(($PORT+$i)) $FILENAME $NUMREQUESTS &
     done
 }
 

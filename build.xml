@@ -1,0 +1,28 @@
+<project>
+    <jar destfile="build/CentralIndexingServer.jar">
+      <fileset includes="server/*.class" dir="bin/"/>
+      <manifest>
+        <attribute name="Main-Class" value="server.CentralIndexingServer"/>
+      </manifest>
+    </jar>
+
+    <jar destfile="build/Client.jar">
+      <fileset dir="bin/">
+        <include name="util/util.class"/>
+        <include name="client/*.java"/>
+      </fileset>
+      <manifest>
+        <attribute name="Main-Class" value="client.Client"/>
+      </manifest>
+    </jar>
+
+    <jar destfile="build/Benchmarking.jar">
+      <fileset dir="bin/">
+        <include name="util/util.class"/>
+        <include name="client/*.java"/>
+      </fileset>
+      <manifest>
+        <attribute name="Main-Class" value="bench.Benchmarking"/>
+      </manifest>
+    </jar>
+</project>
