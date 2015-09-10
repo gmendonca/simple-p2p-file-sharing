@@ -1,6 +1,31 @@
-#javac server/*.java client/*.java bench/*.java util/*.java
+#!/bin/bash
 
-#java server/CentralIndexingServer
-#java client/Client peer3/ 4003
+compile()
+{
+    javac server/*.java client/*.java bench/*.java util/*.java
+}
 
-java bench/Benchmarking peer1 4001 nano & java bench/Benchmarking peer2 4002 nano & java bench/Benchmarking peer2 4004 nano
+
+run_server()
+{
+    java server/CentralIndexingServer
+}
+
+run_a_client()
+{
+    DIRECTORY=$1
+    PORT=$2
+    java client/Client $DIRECTORY $PORT
+}
+
+benchmarking()
+{
+    N=$1
+    PORT=13000
+
+    for ((i=0; i<=N; i++)); do
+        java bench/Benchmarking peer1/ $(($PORT+$i)) nano &
+    done
+}
+
+#java bench/Benchmarking peer1 4001 nano & java bench/Benchmarking peer2 4002 nano & java bench/Benchmarking peer2 4004 nano
