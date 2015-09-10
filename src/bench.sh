@@ -22,9 +22,11 @@ benchmarking()
 {
     N=$1
     PORT=13000
+    FILENAME=$2
+    NUMREQUESTS=$3
 
     for ((i=0; i<=N; i++)); do
-        java bench/Benchmarking peer1/ $(($PORT+$i)) nano &
+        java bench/Benchmarking peer1/ $(($PORT+$i)) $FILENAME $NUMREQUESTS &
     done
 }
 
