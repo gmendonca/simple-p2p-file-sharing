@@ -41,8 +41,8 @@ public class Benchmarking {
 
 	public static void main(String[] args) throws IOException {
     	
-    	if(args.length < 2){
-    		System.out.println("It should be java/client folder port");
+    	if(args.length < 4){
+    		System.out.println("It should be java/client folder port fileName numRequests");
     		return;
     	}
     	
@@ -92,6 +92,14 @@ public class Benchmarking {
     	
     	String fileName = args[2];
     	
-    	sendRequests(peer, fileName, 100);
+    	int numRequests = 100;
+    	
+    	try{
+    		numRequests = Integer.parseInt(args[3]);
+    	} catch (Exception e){
+    		System.out.println("Put a valid port number");
+    	}
+    	
+    	sendRequests(peer, fileName, numRequests);
     }
 }
