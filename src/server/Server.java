@@ -109,7 +109,7 @@ public class Server extends Thread {
 						e.printStackTrace();
 					}
 					if(b){
-						dOut.writeByte(5);
+						dOut.writeByte(1);
 						dOut.writeInt(peerList.size());
 						dOut.flush();
 						for(Peer p : peerList){

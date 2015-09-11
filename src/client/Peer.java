@@ -156,7 +156,7 @@ public class Peer {
     			}catch (EOFException e){
     				i--;
     			}
-    			//System.out.println("Peer " + peerAddress[i] + " has the file " + fileName + "!");
+    			System.out.println("Peer " + peerAddress[i] + " has the file " + fileName + "!");
     		}
     	} else if(found == 0){
     		System.out.println("File not found in the system");
