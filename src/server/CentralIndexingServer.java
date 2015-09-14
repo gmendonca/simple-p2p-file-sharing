@@ -8,6 +8,7 @@ import java.util.ArrayList;
 public class CentralIndexingServer {
 	
 	private static ArrayList<Peer> index;
+	private static int port = 3434;
 	
 	public static ArrayList<Peer> getIndex(){
 		return index;
@@ -23,7 +24,7 @@ public class CentralIndexingServer {
 	private static void server() throws IOException{
 		
 		@SuppressWarnings("resource")
-		ServerSocket serverSocket = new ServerSocket(3434);
+		ServerSocket serverSocket = new ServerSocket(port);
 		
 		while(true){
 			//System.out.println("Waiting for peer...");
@@ -40,6 +41,13 @@ public class CentralIndexingServer {
 	public static void main(String[] args) throws IOException {
 		
 		index = new ArrayList<Peer>();
+		if(args.length > 0){
+			try{
+	    		port = Integer.parseInt(args[1]);
+	    	} catch (Exception e){
+	    		System.out.println("Put a valid port number");
+	    	}
+		}
 		
 		new Thread() {
             public void run() {

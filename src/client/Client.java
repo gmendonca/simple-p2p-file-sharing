@@ -17,13 +17,23 @@ public class Client {
 	public static void main(String[] args) throws IOException {
     	
 		if(args.length < 2){
-    		System.out.println("It should be java/client folder port");
+    		System.out.println("It should be java client/Client folder port");
     		return;
     	}
 		
     	//Server information
     	String serverAddress = "localhost";
     	int serverPort = 3434;
+    	
+    	if(args.length > 2){
+    		try{
+    			serverAddress = args[2];
+        		serverPort = Integer.parseInt(args[3]);
+    		} catch(Exception e){
+    			System.out.println("It should be java client/Client folder port serverAddress serverPort");
+    		}
+    		
+    	}
     	
     	String dir = args[0];
     	File folder = new File(dir);
@@ -35,9 +45,9 @@ public class Client {
 			return;
     	}
     	
-    	URL url = new URL("http://checkip.amazonaws.com/");
-    	BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
-    	System.out.println(br.readLine());
+    	//URL url = new URL("http://checkip.amazonaws.com/");
+    	//BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
+    	//System.out.println(br.readLine());
     	
     	String address = InetAddress.getLocalHost().getHostAddress();
     	int port = 3434;

@@ -42,13 +42,22 @@ public class Benchmarking {
 	public static void main(String[] args) throws IOException {
     	
     	if(args.length < 4){
-    		System.out.println("It should be java/client folder port fileName numRequests");
+    		System.out.println("It should be java bench/Benchmarking folder port fileName numRequests");
     		return;
     	}
     	
     	//Server information
     	String serverAddress = "localhost";
     	int serverPort = 3434;
+    	if(args.length > 4){
+    		try{
+    			serverAddress = args[4];
+        		serverPort = Integer.parseInt(args[5]);
+    		} catch(Exception e){
+    			System.out.println("It should be java bench/Benchmarking folder port fileName numRequests serverAddress serverPort");
+    		}
+    		
+    	}
     	
     	String dir = args[0];
     	File folder = new File(dir);
@@ -58,9 +67,9 @@ public class Benchmarking {
 			return;
     	}
     	
-    	URL url = new URL("http://checkip.amazonaws.com/");
-    	BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
-    	System.out.println(br.readLine());
+    	//URL url = new URL("http://checkip.amazonaws.com/");
+    	//BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
+    	//System.out.println(br.readLine());
     	
     	String address = InetAddress.getLocalHost().getHostAddress();
     	int port = 3434;

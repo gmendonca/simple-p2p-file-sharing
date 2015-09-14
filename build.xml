@@ -1,28 +1,35 @@
 <project>
-    <jar destfile="build/CentralIndexingServer.jar">
-      <fileset includes="server/*.class" dir="bin/"/>
-      <manifest>
-        <attribute name="Main-Class" value="server.CentralIndexingServer"/>
-      </manifest>
-    </jar>
 
-    <jar destfile="build/Client.jar">
-      <fileset dir="bin/">
-        <include name="util/util.class"/>
-        <include name="client/*.java"/>
-      </fileset>
-      <manifest>
-        <attribute name="Main-Class" value="client.Client"/>
-      </manifest>
-    </jar>
+    <target name="clean">
+        <delete dir="build"/>
+    </target>
 
-    <jar destfile="build/Benchmarking.jar">
-      <fileset dir="bin/">
-        <include name="util/util.class"/>
-        <include name="client/*.java"/>
-      </fileset>
-      <manifest>
-        <attribute name="Main-Class" value="bench.Benchmarking"/>
-      </manifest>
-    </jar>
+    <target name="compile">
+        <javac srcdir="src" destdir="bin"/>
+    </target>
+
+    <target name="jar">
+        <mkdir dir="build/" />
+
+        <jar destfile="build/CentralIndexingServer.jar">
+          <fileset includes="server/*.class" dir="bin/"/>
+          <manifest>
+            <attribute name="Main-Class" value="server.CentralIndexingServer"/>
+          </manifest>
+        </jar>
+
+        <jar destfile="build/Client.jar">
+          <fileset includes="client/*.class,util/*.class" dir="bin/"/>
+          <manifest>
+            <attribute name="Main-Class" value="client.Client"/>
+          </manifest>
+        </jar>
+
+        <jar destfile="build/Benchmarking.jar">
+          <fileset includes="client/*.class,util/*.class" dir="bin/"/>
+          <manifest>
+            <attribute name="Main-Class" value="bench.Benchmarking"/>
+          </manifest>
+        </jar>
+    </target>
 </project>
