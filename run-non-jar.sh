@@ -2,9 +2,7 @@
 
 compile()
 {
-    ant clean
-    ant compile
-    ant jar
+    javac -d bin/ src/server/*.java src/client/*.java src/bench/*.java src/util/*.java
 }
 
 
@@ -13,9 +11,9 @@ run_server()
     PORT=$1
 
     if [ $# -eq 1 ]; then
-        java -jar -classpath build/ CentralIndexingServer.jar $PORT
+        java -classpath bin/ server.CentralIndexingServer $PORT
     else
-        java -jar -classpath build/ CentralIndexingServer.jar
+        java -classpath bin/ server.CentralIndexingServer
     fi
 }
 
@@ -29,9 +27,9 @@ run_client()
     if [ $# -lt 2 ]; then
         echo "It should be run_client directory port"
     elif [ $# -lt 2 ]; then
-        java -jar -classpath build/ Client.jar $DIRECTORY $PORT $SERVER $SERVERPORT
+        java -classpath bin/ client.Client $DIRECTORY $PORT $SERVER $SERVERPORT
     else
-        java -jar -classpath build/ Client.jar $DIRECTORY $PORT
+        java -classpath bin/ client.Client $DIRECTORY $PORT
     fi
 }
 
@@ -49,11 +47,11 @@ benchmarking()
         echo "It should be benchmarking numNodes folderName fileName numRequests"
     elif [ $# -gt 4 ]; then
         for ((i=0; i<N; i++)); do
-            java -jar -classpath build/ Benchmarking.jar $FOLDERNAME $(($PORT+$i)) $FILENAME $NUMREQUESTS $SERVER $SERVERPORT &
+            java -classpath bin/ bench.Benchmarking $FOLDERNAME $(($PORT+$i)) $FILENAME $NUMREQUESTS $SERVER $SERVERPORT &
         done
     else
         for ((i=0; i<N; i++)); do
-            java -jar -classpath build/ Benchmarking.jar $FOLDERNAME $(($PORT+$i)) $FILENAME $NUMREQUESTS $SERVER $SERVERPORT &
+            java -classpath bin/ bench.Benchmarking $FOLDERNAME $(($PORT+$i)) $FILENAME $NUMREQUESTS $SERVER $SERVERPORT &
         done
     fi
 
