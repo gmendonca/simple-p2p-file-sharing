@@ -8,7 +8,11 @@ compile()
 
 run_server()
 {
-    java -classpath bin/ server.CentralIndexingServer
+    if [ $# -gt 0 ]; then
+        echo "No arguments required"
+    else
+        java -classpath bin/ server.CentralIndexingServer
+    fi
 }
 
 run_client()
@@ -16,7 +20,11 @@ run_client()
     DIRECTORY=$1
     PORT=$2
 
-    java -classpath bin/ client.Client $DIRECTORY $PORT
+    if [ $# -lt 2 ]; then
+        echo "It should be run_client directory port"
+    else
+        java -classpath bin/ client.Client $DIRECTORY $PORT
+    fi
 }
 
 benchmarking()
@@ -27,9 +35,14 @@ benchmarking()
     FILENAME=$3
     NUMREQUESTS=$4
 
-    for ((i=0; i<N; i++)); do
-        java -classpath bin/ bench.Benchmarking $FOLDERNAME $(($PORT+$i)) $FILENAME $NUMREQUESTS &
-    done
+    if [ $# -lt 4 ]; then
+        echo "It should be benchmarking numNodes folderName fileName numRequests"
+    else
+        for ((i=0; i<N; i++)); do
+            java -classpath bin/ bench.Benchmarking $FOLDERNAME $(($PORT+$i)) $FILENAME $NUMREQUESTS &
+        done
+    fi
+
 }
 
 help(){
@@ -61,5 +74,3 @@ help(){
             echo "        "
     fi
 }
-
-#java bench/Benchmarking peer1 4001 nano & java bench/Benchmarking peer2 4002 nano & java bench/Benchmarking peer2 4004 nano
