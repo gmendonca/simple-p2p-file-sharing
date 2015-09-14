@@ -8,16 +8,15 @@ compile()
 
 run_server()
 {
-    cd bin/
-    java server/CentralIndexingServer
+    java -classpath bin/ server.CentralIndexingServer
 }
 
 run_client()
 {
     DIRECTORY=$1
     PORT=$2
-    cd bin/
-    java client/Client $DIRECTORY $PORT
+
+    java -classpath bin/ client.Client $DIRECTORY $PORT
 }
 
 benchmarking()
@@ -28,9 +27,8 @@ benchmarking()
     FILENAME=$3
     NUMREQUESTS=$4
 
-    cd bin/
     for ((i=0; i<N; i++)); do
-        java bench/Benchmarking $FOLDERNAME $(($PORT+$i)) $FILENAME $NUMREQUESTS &
+        java -classpath bin/ bench.Benchmarking $FOLDERNAME $(($PORT+$i)) $FILENAME $NUMREQUESTS &
     done
 }
 
