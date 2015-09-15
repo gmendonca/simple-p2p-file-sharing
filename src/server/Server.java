@@ -27,20 +27,20 @@ public class Server extends Thread {
 		peerList.add(peer);
 	}
 	
+	public Boolean addAllPeer(ArrayList<Peer> peers){
+		peerList.addAll(peers);
+		return true;
+	}
+	
 	public Server(Socket socket){
 		this.socket = socket;
 	}
 	
 	public Boolean search(String fileName){
-		Boolean found = false;
 		newPeerList();
-		 for (Peer p : CentralIndexingServer.getIndex()){
-			 if(p.searchFile(fileName)){
-				 addPeer(p);
-				 found = true;
-			 }
-		 }
-		 return found;
+		return (CentralIndexingServer.getIndex().containsKey(fileName))
+				? addAllPeer(CentralIndexingServer.getIndex().get(fileName))
+				: false;
 	}
 	
 	public void run(){

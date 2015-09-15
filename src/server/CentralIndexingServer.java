@@ -3,14 +3,15 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Hashtable;
 
 
 public class CentralIndexingServer {
 	
-	private static ArrayList<Peer> index;
+	private static Hashtable<String,ArrayList<Peer>> index;
 	private static int port = 3434;
 	
-	public static ArrayList<Peer> getIndex(){
+	public static Hashtable<String,ArrayList<Peer>> getIndex(){
 		return index;
 	}
 	
@@ -35,12 +36,20 @@ public class CentralIndexingServer {
 	}
 	
 	public static void registry(int peerId, int numFiles, ArrayList<String> fileNames, String directory, String address, int port){
-		index.add(new Peer(peerId, numFiles, fileNames, directory, address, port));
+		for(String fileName : fileNames){
+			if(index.containsKey(fileName)){
+				index.get(fileName).add(new Peer(peerId, numFiles, fileNames, directory, address, port));
+			}else {
+				index.put(fileName, new ArrayList<Peer>());
+				index.get(fileName).add(new Peer(peerId, numFiles, fileNames, directory, address, port));
+			}
+			
+		}
 	}
 	
 	public static void main(String[] args) throws IOException {
 		
-		index = new ArrayList<Peer>();
+		index = new Hashtable<String, ArrayList<Peer>>();
 		if(args.length > 0){
 			try{
 	    		port = Integer.parseInt(args[1]);
