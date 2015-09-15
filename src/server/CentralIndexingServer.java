@@ -4,12 +4,14 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.concurrent.ArrayBlockingQueue;
 
 
 public class CentralIndexingServer {
 	
 	private static Hashtable<String,ArrayList<Peer>> index;
 	private static int port = 3434;
+	private static ArrayBlockingQueue<Socket> peerQueue;
 	
 	public static Hashtable<String,ArrayList<Peer>> getIndex(){
 		return index;
@@ -30,7 +32,20 @@ public class CentralIndexingServer {
 		while(true){
 			//System.out.println("Waiting for peer...");
 			Socket socket = serverSocket.accept();
-			new Server(socket).start();
+			peerQueue.add(socket);
+			//new Server(socket).start();
+			
+		}
+		
+	}
+
+	private static void income() throws IOException{
+		
+		while(true){
+			if(peerQueue.peek() == null)
+				continue;
+			
+			new Server(peerQueue.poll()).start();
 		}
 		
 	}
@@ -62,6 +77,16 @@ public class CentralIndexingServer {
             public void run() {
                 try {
                    server(); 
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }.start();
+        
+        new Thread() {
+            public void run() {
+                try {
+                   income(); 
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
