@@ -104,7 +104,7 @@ public class Server extends Thread {
 					Boolean b = search(fileName);
 					//TODO: see if I can do this with wait and notify, or find a better time and took it out from the overall time
 					try {
-						Thread.sleep(1);
+						Thread.sleep(3);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
