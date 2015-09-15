@@ -1,12 +1,9 @@
 package client;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -45,9 +42,7 @@ public class Client {
 			return;
     	}
     	
-    	//URL url = new URL("http://checkip.amazonaws.com/");
-    	//BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
-    	//System.out.println(br.readLine());
+    	//Util.getExternalIP();
     	
     	String address = InetAddress.getLocalHost().getHostAddress();
     	int port = 3434;

@@ -1,8 +1,11 @@
 package util;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.net.URL;
 import java.util.ArrayList;
 
 
@@ -31,5 +34,11 @@ public class Util {
 	
 	public static long toSeconds(long start, long end){
 		return (end-start)/1000;
+	}
+	
+	public static String getExternalIP() throws IOException{
+		URL url = new URL("http://checkip.amazonaws.com/");
+    	BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
+    	return br.readLine();
 	}
 }
