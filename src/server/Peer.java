@@ -38,6 +38,7 @@ public class Peer {
 	}
 	
 	public String getAddress(){
+		System.out.println("get =" + address);
 		return address;
 	}
 	

@@ -10,7 +10,7 @@ public class Server extends Thread {
 	
 	private static int id = 0;
 	
-	private static ArrayList<Peer> peerList;
+	private ArrayList<Peer> peerList;
 	private Socket socket;
 	
 	private int getUniqueId(){
@@ -92,6 +92,16 @@ public class Server extends Thread {
 					
 					synchronized(this){
 						CentralIndexingServer.registry(peerId, numFiles, fileNames, directory, address, port);
+						try {
+							Thread.sleep(3);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					}
+					try {
+						Thread.sleep(3);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
 					}
 					
 					
@@ -101,23 +111,37 @@ public class Server extends Thread {
 				case 1:
 					String fileName = dIn.readUTF();
 					//System.out.println(dIn.readUTF());
-					Boolean b = search(fileName);
+					Boolean b = false;
+					b = search(fileName);
 					//TODO: see if I can do this with wait and notify, or find a better time and took it out from the overall time
 					/*try {
-						Thread.sleep(5);
+						Thread.sleep(3);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}*/
 					if(b){
+						while(peerList.size() <= 0){
+							try {
+								Thread.sleep(1);
+							} catch (InterruptedException e) {
+								System.out.println("Exception!!!!!!");
+							}
+						}
 						dOut.writeByte(1);
 						dOut.writeInt(peerList.size());
 						dOut.flush();
-						//System.out.println(peerList.size());
-						for(Peer p : peerList){
-							//System.out.println(p.getAddress() + p.getPort());
-							dOut.writeUTF(p.getAddress() + ":" + p.getPort());
+						try{
+							for(Peer p : peerList){
+								dOut.writeUTF(p.getAddress() + ":" + p.getPort());
+							}
 							dOut.flush();
+						} catch (Exception e){
+							System.out.println("lala = " + peerList.size());
+							System.out.println("null = " + peerList.get(0));
+							System.out.println("address = " + peerList.get(0).getAddress());
+							System.out.println("port = " + peerList.get(0).getPort());
 						}
+						
 					}else {
 						dOut.writeByte(0);
 						dOut.flush();

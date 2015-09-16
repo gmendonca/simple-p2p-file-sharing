@@ -55,7 +55,7 @@ public class CentralIndexingServer {
 		while(true){
 			if(peerQueue.peek() == null){
 				try {
-					Thread.sleep(1);
+					Thread.sleep(2);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
@@ -65,6 +65,7 @@ public class CentralIndexingServer {
 				//System.out.println("Added to executor");
 				Server s = new Server(peerQueue.poll());
 				executor.execute(s);
+				//s.start();
 			}
 		}
 		
