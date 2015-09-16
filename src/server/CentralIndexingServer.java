@@ -32,11 +32,16 @@ public class CentralIndexingServer {
 		ServerSocket serverSocket = new ServerSocket(port);
 		
 		while(true){
-			System.out.println("Waiting for peer...");
+			//System.out.println("Waiting for peer...");
 			Socket socket = serverSocket.accept();
 			synchronized(peerQueue){
 				peerQueue.add(socket);
-				System.out.println("Added to queue.");
+				//System.out.println("Added to queue.");
+			}
+			try {
+				Thread.sleep(2);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
 			
 		}
@@ -45,7 +50,7 @@ public class CentralIndexingServer {
 
 	private static void income() throws IOException{
 		
-		//ExecutorService executor = Executors.newFixedThreadPool(numThreads);
+		ExecutorService executor = Executors.newFixedThreadPool(numThreads);
 
 		while(true){
 			if(peerQueue.peek() == null){
@@ -59,8 +64,8 @@ public class CentralIndexingServer {
 			synchronized(peerQueue){
 				//System.out.println("Added to executor");
 				Server s = new Server(peerQueue.poll());
-				//executor.execute(s);
-				s.start();
+				executor.execute(s);
+				//s.start();
 			}
 		}
 		

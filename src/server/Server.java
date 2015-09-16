@@ -103,17 +103,18 @@ public class Server extends Thread {
 					//System.out.println(dIn.readUTF());
 					Boolean b = search(fileName);
 					//TODO: see if I can do this with wait and notify, or find a better time and took it out from the overall time
-					try {
+					/*try {
 						Thread.sleep(5);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
-					}
+					}*/
 					if(b){
 						dOut.writeByte(1);
 						dOut.writeInt(peerList.size());
 						dOut.flush();
-						System.out.println(peerList.size());
+						//System.out.println(peerList.size());
 						for(Peer p : peerList){
+							//System.out.println(p.getAddress() + p.getPort());
 							dOut.writeUTF(p.getAddress() + ":" + p.getPort());
 							dOut.flush();
 						}
