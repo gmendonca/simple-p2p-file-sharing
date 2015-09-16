@@ -100,7 +100,7 @@ public class Server extends Thread {
 					break;
 				case 1:
 					String fileName = dIn.readUTF();
-					System.out.println(dIn.readUTF());
+					//System.out.println(dIn.readUTF());
 					Boolean b = search(fileName);
 					//TODO: see if I can do this with wait and notify, or find a better time and took it out from the overall time
 					try {
@@ -112,7 +112,9 @@ public class Server extends Thread {
 						dOut.writeByte(1);
 						dOut.writeInt(peerList.size());
 						dOut.flush();
+						//System.out.println(peerList.size());
 						for(Peer p : peerList){
+							//System.out.println(p.getAddress() + p.getPort());
 							dOut.writeUTF(p.getAddress() + ":" + p.getPort());
 							dOut.flush();
 						}
