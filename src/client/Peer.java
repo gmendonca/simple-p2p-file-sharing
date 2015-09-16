@@ -9,7 +9,10 @@ import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
+import util.PeerQueue;
 import util.Util;
 
 
@@ -21,6 +24,8 @@ public class Peer {
 	private String directory;
 	private String address;
 	private int port;
+	private PeerQueue<Connection> peerQueue;
+	private int numThreads = 4;
 	
 	public Peer(String directory, ArrayList<String> fileNames, int numFiles, String address, int port) throws IOException{
 		this.directory = directory;
@@ -28,6 +33,8 @@ public class Peer {
 		this.numFiles = numFiles;
 		this.address = address;
 		this.port = port;
+		
+		peerQueue = new PeerQueue<Connection>();
 	}
 	
 	//getters
@@ -174,10 +181,45 @@ public class Peer {
 		@SuppressWarnings("resource")
 		ServerSocket serverSocket = new ServerSocket(port);
 		
-		while(true){
+		/*while(true){
 			System.out.println("Waiting for peer...");
 			Socket socket = serverSocket.accept();
 			new Server(socket, directory).start();
+		}*/
+		
+		while(true){
+			Socket socket = serverSocket.accept();
+			synchronized(peerQueue){
+				peerQueue.add(new Connection(socket,directory));
+			}
+			try {
+				Thread.sleep(2);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		
+	}
+    
+    public void income() throws IOException{
+		
+		ExecutorService executor = Executors.newFixedThreadPool(numThreads);
+
+		while(true){
+			if(peerQueue.peek() == null){
+				try {
+					Thread.sleep(1);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				continue;
+			}
+			synchronized(peerQueue){
+				//System.out.println("Added to executor");
+				Connection c = peerQueue.poll();
+				Server s = new Server(c.getSocket(), c.getDirectory());
+				executor.execute(s);
+			}
 		}
 		
 	}

@@ -66,6 +66,16 @@ public class Client {
     		}
     	}.start();
     	
+    	new Thread(){
+    		public void run(){
+    			try {
+					peer.income();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+    		}
+    	}.start();
+    	
     	String [] peerAddress = new String[0];
     	
     	Scanner scanner = new Scanner(System.in);

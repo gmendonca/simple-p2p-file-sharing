@@ -7,13 +7,15 @@ import java.util.Hashtable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import util.PeerQueue;
+
 
 public class CentralIndexingServer {
 	
 	private static Hashtable<String,ArrayList<Peer>> index;
 	private static int port = 3434;
 	private static int numThreads = 4;
-	private static PeerQueue peerQueue;
+	private static PeerQueue<Socket> peerQueue;
 	
 	public static Hashtable<String,ArrayList<Peer>> getIndex(){
 		return index;
@@ -85,7 +87,7 @@ public class CentralIndexingServer {
 	public static void main(String[] args) throws IOException {
 		
 		index = new Hashtable<String, ArrayList<Peer>>();
-		peerQueue = new PeerQueue();
+		peerQueue = new PeerQueue<Socket>();
 		if(args.length > 0){
 			try{
 	    		port = Integer.parseInt(args[1]);
