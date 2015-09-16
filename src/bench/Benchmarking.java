@@ -92,6 +92,16 @@ public class Benchmarking {
 					e.printStackTrace();
 				}
     		}
+    	}.start();
+    	
+    	new Thread(){
+    		public void run(){
+    			try {
+					peer.server();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+    		}
     	}.start();*/
     	
     	String fileName = args[2];
