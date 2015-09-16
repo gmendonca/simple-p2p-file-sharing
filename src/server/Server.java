@@ -10,7 +10,7 @@ public class Server extends Thread {
 	
 	private static int id = 0;
 	
-	private static ArrayList<Peer> peerList;
+	private ArrayList<Peer> peerList;
 	private Socket socket;
 	
 	private int getUniqueId(){
