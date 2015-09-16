@@ -130,17 +130,10 @@ public class Server extends Thread {
 						dOut.writeByte(1);
 						dOut.writeInt(peerList.size());
 						dOut.flush();
-						try{
-							for(Peer p : peerList){
-								dOut.writeUTF(p.getAddress() + ":" + p.getPort());
-							}
-							dOut.flush();
-						} catch (Exception e){
-							System.out.println("lala = " + peerList.size());
-							System.out.println("null = " + peerList.get(0));
-							System.out.println("address = " + peerList.get(0).getAddress());
-							System.out.println("port = " + peerList.get(0).getPort());
+						for(Peer p : peerList){
+							dOut.writeUTF(p.getAddress() + ":" + p.getPort());
 						}
+						dOut.flush();
 						
 					}else {
 						dOut.writeByte(0);
