@@ -65,7 +65,6 @@ public class CentralIndexingServer {
 				//System.out.println("Added to executor");
 				Server s = new Server(peerQueue.poll());
 				executor.execute(s);
-				//s.start();
 			}
 		}
 		
