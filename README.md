@@ -17,7 +17,17 @@ $ run_client
 $ benchmarking
 ```
 
-* compile - compile using ant and build the jar files to run the rest of the script.
-* run_server -
-* run_client -
-* benchmarking -
+A quickly overview of the files are shown above:
+
+* compile - Compile using ant and build the jar files to run the rest of the script.
+* run_server - Run the Central Indexing Server at the Default port 3434.
+* run_client - Run a Peer.
+* benchmarking - Benchmark the system.
+
+## compile
+
+## run_server
+
+## run_client
+
+## benchmarking
