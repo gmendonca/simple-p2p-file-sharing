@@ -25,18 +25,16 @@ A quickly overview of the files are shown above and further the full explanation
 * benchmarking - Benchmark the system.
 
 
-* compile
+## compile
 
 - There aren't possible option here, but this will only work with a working version of Apache Ant.
-
-* run_server
+## run_server
 
 - By default it runs the server at the port 3434, to change it you have to use:
 
 ```sh
 $ run_server portNumber
 ```
+### run_client
 
-* run_client
-
-* benchmarking
+### benchmarking
