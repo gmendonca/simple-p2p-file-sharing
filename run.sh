@@ -59,6 +59,23 @@ benchmarking()
 
 }
 
+create_directory(){
+    FOLDERNAME=$1
+    N=$2
+
+    mkdir $FOLDERNAME
+
+    for ((i=0; i<N; i++)); do
+        if [ $i -gt 9 ]; then
+            base64 /dev/urandom | head -c $((RANDOM%20000+1000)) > $FOLDERNAME/file-0$i
+        elif [ $i -gt 99 ]; then
+            base64 /dev/urandom | head -c $((RANDOM%20000+1000)) > $FOLDERNAME/file-$i
+        else
+            base64 /dev/urandom | head -c $((RANDOM%20000+1000)) > $FOLDERNAME/file-00$i
+        fi
+    done
+}
+
 help(){
     if [ $# -eq 0 ]; then
         echo "        "

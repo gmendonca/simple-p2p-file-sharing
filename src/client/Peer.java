@@ -2,6 +2,7 @@ package client;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.EOFException;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -92,6 +93,7 @@ public class Peer {
 		}
     
     public void register(Socket socket) throws IOException {
+    	
     	System.out.println("Connecting to the server...");
     	DataOutputStream dOut = new DataOutputStream(socket.getOutputStream());
     	
@@ -129,7 +131,7 @@ public class Peer {
     	dIn.close();
     	socket.close();
     	
-    	System.out.println("Running as Peer " + peerId + "!");
+    	System.out.println("Running as Peer " + peerId + "! " + "Took");
 	}
 
     public String[] lookup(String fileName, Socket socket, int count) throws IOException{
@@ -229,7 +231,21 @@ public class Peer {
     	DataOutputStream dOut = new DataOutputStream(socket.getOutputStream());
     	dOut.writeUTF(fileName);
         InputStream in = socket.getInputStream();
-        OutputStream out = new FileOutputStream(fileName);
+        
+        String folder = "peer" + peerId + "-downloads/";
+        File f = new File(folder);
+        Boolean created = false;
+        if (!f.exists()){
+        	try {
+        		created = f.mkdir();
+        	}catch (Exception e){
+        		System.out.println("Couldn't create the folder, the file will be saved in the current directory!");
+        	}
+        }else {
+        	created = true;
+        }
+        
+        OutputStream out = (created) ? new FileOutputStream(f.toString() + "/" + fileName) : new FileOutputStream(fileName);
         Util.copy(in, out);
         System.out.println("File " + fileName + " recieved from peer " + peerAddress + ":" + port);
         dOut.close();

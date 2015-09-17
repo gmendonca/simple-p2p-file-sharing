@@ -35,6 +35,4 @@ local.properties
 *.jar
 
 # Test files
-peer1/
-peer2/
-peer3/
+peer*/
