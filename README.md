@@ -43,6 +43,9 @@ $ run_server portNumber
 For the client there are two possibilities, the first one uses the default address for the Central Indexing Server and the second one you have to define the address and port for the server:
 
 1. Uses the Central Indexing Server at localhost:3434
+```sh
+$ run_client directory port
+```
 
 2. Uses the Central Indexing Server address defined by the user:
 ```sh
