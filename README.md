@@ -19,10 +19,10 @@ $ benchmarking
 
 A quickly overview of the files are shown above:
 
-* compile - Compile using ant and build the jar files to run the rest of the script.
-* run_server - Run the Central Indexing Server at the Default port 3434.
-* run_client - Run a Peer.
-* benchmarking - Benchmark the system.
+* [compile](https://github.com/gmendonca/simple-p2p-file-sharing#compile) - Compile using ant and build the jar files to run the rest of the script.
+* [run_server](https://github.com/gmendonca/simple-p2p-file-sharing#run_server) - Run the Central Indexing Server at the Default port 3434.
+* [run_client](https://github.com/gmendonca/simple-p2p-file-sharing#run_client) - Run a Peer.
+* [benchmarking](https://github.com/gmendonca/simple-p2p-file-sharing#benchmarking) - Benchmark the system.
 
 
 ## Commands
