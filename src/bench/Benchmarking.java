@@ -79,7 +79,7 @@ public class Benchmarking {
     	peer.register(new Socket(serverAddress, serverPort));
     	
     	try {
-			Thread.sleep(10);
+			Thread.sleep(2);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}

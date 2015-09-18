@@ -36,3 +36,4 @@ local.properties
 
 # Test files
 peer*/
+test*

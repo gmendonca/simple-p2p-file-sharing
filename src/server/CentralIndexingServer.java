@@ -21,13 +21,6 @@ public class CentralIndexingServer {
 		return index;
 	}
 	
-	private static int id = 0;
-	
-	@SuppressWarnings("unused")
-	private static int getUniqueId(){
-		return ++id;
-	}
-	
 	private static void server() throws IOException{
 		
 		@SuppressWarnings("resource")
