@@ -26,7 +26,7 @@ run_client()
 
     if [ $# -lt 2 ]; then
         echo "It should be run_client directory port"
-    elif [ $# -lt 2 ]; then
+    elif [ $# -gt 2 ]; then
         java -classpath bin/ client.Client $DIRECTORY $PORT $SERVER $SERVERPORT
     else
         java -classpath bin/ client.Client $DIRECTORY $PORT
@@ -51,7 +51,7 @@ bench_lookup()
         done
     else
         for ((i=0; i<N; i++)); do
-            java -classpath bin/ bench.BenchLookup $FOLDERNAME $(($PORT+$i)) $FILENAME $NUMREQUESTS $SERVER $SERVERPORT &
+            java -classpath bin/ bench.BenchLookup $FOLDERNAME $(($PORT+$i)) $FILENAME $NUMREQUESTS &
         done
     fi
 
@@ -75,10 +75,30 @@ bench_download()
         done
     else
         for ((i=0; i<N; i++)); do
-            java -classpath bin/ bench.BenchDownload $FOLDERNAME $(($PORT+$i)) $FILENAME $NUMREQUESTS $SERVER $SERVERPORT &
+            java -classpath bin/ bench.BenchDownload $FOLDERNAME $(($PORT+$i)) $FILENAME $NUMREQUESTS &
         done
     fi
 
+}
+
+bench__single_registry(){
+
+    N=$1
+    PORT=13000
+    FOLDERNAME=$2
+    NUMPEERS=$3
+
+    if [ $# -lt 2 ]; then
+        echo "It should be bench_registry numPeers folderName"
+    elif [ $# -gt 2 ]; then
+        for ((i=0; i<N; i++)); do
+            java -classpath bin/ bench.BenchSingleRegistry $FOLDERNAME $(($PORT+$i)) $SERVER $SERVERPORT &
+        done
+    else
+        for ((i=0; i<N; i++)); do
+            java -classpath bin/ bench.BenchSingleRegistry $FOLDERNAME $(($PORT+$i)) &
+        done
+    fi
 }
 
 bench_registry(){
@@ -87,16 +107,12 @@ bench_registry(){
     FOLDERNAME=$1
     NUMPEERS=$2
 
-    if [ $# -lt 3 ]; then
+    if [ $# -lt 2 ]; then
         echo "It should be bench_registry folderName numPeers"
-    elif [ $# -gt 4 ]; then
-        for ((i=0; i<N; i++)); do
-            java -classpath bin/ bench.BenchRegistry $FOLDERNAME $(($PORT+$i)) $NUMPEERS &
-        done
+    elif [ $# -gt 2 ]; then
+        java -classpath bin/ bench.BenchRegistry $FOLDERNAME $(($PORT+$i)) $NUMPEERS &
     else
-        for ((i=0; i<N; i++)); do
-            java -classpath bin/ bench.BenchRegistry $FOLDERNAME $(($PORT+$i)) $NUMPEERS $SERVER $SERVERPORT &
-        done
+        java -classpath bin/ bench.BenchRegistry $FOLDERNAME $(($PORT+$i)) $NUMPEERS $SERVER $SERVERPORT &
     fi
 }
 

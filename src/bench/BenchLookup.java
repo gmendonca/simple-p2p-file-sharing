@@ -83,17 +83,6 @@ public class BenchLookup {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-    	
-    	/*new Thread(){
-    		public void run(){
-    			try {
-					peer.server();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-    		}
-    	}.start();*/
-    	
     	String fileName = args[2];
     	
     	int numRequests = 100;
