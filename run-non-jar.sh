@@ -5,7 +5,6 @@ compile()
     javac -d bin/ src/server/*.java src/client/*.java src/bench/*.java src/util/*.java
 }
 
-
 run_server()
 {
     PORT=$1
