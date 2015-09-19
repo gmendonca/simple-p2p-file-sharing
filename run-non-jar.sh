@@ -33,7 +33,7 @@ run_client()
     fi
 }
 
-benchmarking()
+bench_lookup()
 {
     N=$1
     PORT=13000
@@ -47,11 +47,35 @@ benchmarking()
         echo "It should be benchmarking numNodes folderName fileName numRequests"
     elif [ $# -gt 4 ]; then
         for ((i=0; i<N; i++)); do
-            java -classpath bin/ bench.Benchmarking $FOLDERNAME $(($PORT+$i)) $FILENAME $NUMREQUESTS $SERVER $SERVERPORT &
+            java -classpath bin/ bench.BenchLookup $FOLDERNAME $(($PORT+$i)) $FILENAME $NUMREQUESTS $SERVER $SERVERPORT &
         done
     else
         for ((i=0; i<N; i++)); do
-            java -classpath bin/ bench.Benchmarking $FOLDERNAME $(($PORT+$i)) $FILENAME $NUMREQUESTS $SERVER $SERVERPORT &
+            java -classpath bin/ bench.BenchLookup $FOLDERNAME $(($PORT+$i)) $FILENAME $NUMREQUESTS $SERVER $SERVERPORT &
+        done
+    fi
+
+}
+
+bench_download()
+{
+    N=$1
+    PORT=13000
+    FOLDERNAME=$2
+    FILENAME=$3
+    NUMREQUESTS=$4
+    SERVER=$5
+    SERVERPORT=$6
+
+    if [ $# -lt 4 ]; then
+        echo "It should be benchmarking numNodes folderName fileName numRequests"
+    elif [ $# -gt 4 ]; then
+        for ((i=0; i<N; i++)); do
+            java -classpath bin/ bench.BenchDownload $FOLDERNAME $(($PORT+$i)) $FILENAME $NUMREQUESTS $SERVER $SERVERPORT &
+        done
+    else
+        for ((i=0; i<N; i++)); do
+            java -classpath bin/ bench.BenchDownload $FOLDERNAME $(($PORT+$i)) $FILENAME $NUMREQUESTS $SERVER $SERVERPORT &
         done
     fi
 
@@ -63,7 +87,17 @@ bench_registry(){
     FOLDERNAME=$1
     NUMPEERS=$2
 
-    java -classpath bin/ bench.BenchRegistry $FOLDERNAME $(($PORT+$i)) $NUMPEERS &
+    if [ $# -lt 3 ]; then
+        echo "It should be bench_registry folderName numPeers"
+    elif [ $# -gt 4 ]; then
+        for ((i=0; i<N; i++)); do
+            java -classpath bin/ bench.BenchRegistry $FOLDERNAME $(($PORT+$i)) $NUMPEERS &
+        done
+    else
+        for ((i=0; i<N; i++)); do
+            java -classpath bin/ bench.BenchRegistry $FOLDERNAME $(($PORT+$i)) $NUMPEERS $SERVER $SERVERPORT &
+        done
+    fi
 }
 
 create_directory(){

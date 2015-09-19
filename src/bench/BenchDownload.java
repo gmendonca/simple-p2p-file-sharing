@@ -18,11 +18,15 @@ public class BenchDownload{
 	public static void sendRequests(Peer peer, String fileName, int numRequests) throws IOException{
 		long startTime = System.currentTimeMillis();
 		
+		String peerAddress[];
+		
 		@SuppressWarnings("unused")
 		long start;
 		for(int i = 0; i < numRequests; i++){
 			start = System.currentTimeMillis();
-			peer.lookup(fileName, new Socket(serverAddress, serverPort), i);
+			peerAddress = peer.lookup(fileName, new Socket(serverAddress, serverPort), i);
+			String[] addrport = peerAddress[0].split(":");
+			peer.download(addrport[0], Integer.parseInt(addrport[1]), fileName);
 			//System.out.println("Took " + (System.currentTimeMillis() - start) + " ms.");
 		}
 		
