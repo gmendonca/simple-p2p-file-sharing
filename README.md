@@ -52,4 +52,14 @@ For the client there are two possibilities, the first one uses the default addre
     run_client directory port serverAddress serverPort
     ```
 
-### benchmarking
+### bench_lookup
+
+### bench_single_registry
+
+### bench_registry
+
+### bench_download
+
+### create_directory
+
+### help
