@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import util.Util;
 import client.Peer;
 
-public class Benchmarking {
+public class BenchLookup {
 	
 	private static String serverAddress = "localhost";
 	private static int serverPort = 3434;
@@ -85,16 +85,6 @@ public class Benchmarking {
 		}
     	
     	/*new Thread(){
-    		public void run(){
-    			try {
-					peer.server();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-    		}
-    	}.start();
-    	
-    	new Thread(){
     		public void run(){
     			try {
 					peer.server();

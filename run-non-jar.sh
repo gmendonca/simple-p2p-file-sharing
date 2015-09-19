@@ -57,6 +57,15 @@ benchmarking()
 
 }
 
+bench_registry(){
+
+    PORT=13000
+    FOLDERNAME=$1
+    NUMPEERS=$2
+
+    java -classpath bin/ bench.BenchRegistry $FOLDERNAME $(($PORT+$i)) $NUMPEERS &
+}
+
 create_directory(){
     FOLDERNAME=$1
     N=$2

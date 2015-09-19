@@ -16,7 +16,7 @@ public class BenchRegistry {
 		
 		int numThreads = 4;
     	
-    	if(args.length < 4){
+    	if(args.length < 3){
     		System.out.println("It should be java bench/BenchRegistry folder port numPeers");
     		return;
     	}
@@ -53,8 +53,6 @@ public class BenchRegistry {
     	}
     	
     	ArrayList<String> fileNames = Util.listFilesForFolder(folder);
-    	//Peer peer = new Peer(dir, fileNames, fileNames.size(), address, port);
-    	//peer.register(new Socket(serverAddress, serverPort));
     	
     	int numPeers = 10;
     	
