@@ -52,7 +52,7 @@ bench_lookup()
             java -classpath bin/ bench.BenchLookup $FOLDERNAME $(($PORT+$i)) $FILENAME $NUMREQUESTS $SERVER $SERVERPORT &
         done
     else
-        echo "It should be benchmarking numNodes folderName fileName numRequests"
+        echo "It should be bench_lookup numNodes folderName fileName numRequests"
     fi
 
 }
@@ -76,7 +76,7 @@ bench_download()
             java -classpath bin/ bench.BenchDownload $FOLDERNAME $(($PORT+$i)) $FILENAME $NUMREQUESTS &
         done
     else
-        echo "It should be benchmarking numNodes folderName fileName numRequests"
+        echo "It should be bench_download numNodes folderName fileName numRequests"
     fi
 
 }
@@ -96,7 +96,7 @@ bench_single_registry(){
             java -classpath bin/ bench.BenchSingleRegistry $FOLDERNAME $(($PORT+$i)) &
         done
     else
-        echo "It should be bench_registry numPeers folderName"
+        echo "It should be bench_single_registry numPeers folderName"
     fi
 }
 
@@ -120,16 +120,19 @@ create_directory(){
     N=$2
 
     mkdir $FOLDERNAME
-
-    for ((i=0; i<N; i++)); do
-        if [ $i -gt 9 ]; then
-            base64 /dev/urandom | head -c $((RANDOM%20000+1000)) > $FOLDERNAME/file-0$i
-        elif [ $i -gt 99 ]; then
-            base64 /dev/urandom | head -c $((RANDOM%20000+1000)) > $FOLDERNAME/file-$i
-        else
-            base64 /dev/urandom | head -c $((RANDOM%20000+1000)) > $FOLDERNAME/file-00$i
-        fi
-    done
+    if [ $# -eq 2 ]; then
+        for ((i=0; i<N; i++)); do
+            if [ $i -gt 9 ]; then
+                base64 /dev/urandom | head -c $((RANDOM%20000+1000)) > $FOLDERNAME/file-0$i
+            elif [ $i -gt 99 ]; then
+                base64 /dev/urandom | head -c $((RANDOM%20000+1000)) > $FOLDERNAME/file-$i
+            else
+                base64 /dev/urandom | head -c $((RANDOM%20000+1000)) > $FOLDERNAME/file-00$i
+            fi
+        done
+    else
+        echo "It should be create_directory folderName numFiles"
+    fi
 }
 
 help(){
@@ -138,10 +141,10 @@ help(){
         echo "        run_server - Run the Central Indexing Server"
         echo "        run_client - Run a Peer"
         echo "        bench_lookup - Run a Benchmarking with multiple requests to the server"
-        echo "        bench_single_registry - Run a Benchmarking with multiple requests to the server"
-        echo "        bench_registry - Run a Benchmarking with multiple requests to the server"
-        echo "        bench_download - Run a Benchmarking with multiple requests to the server"
-        echo "        create_directory - Run a Benchmarking with multiple requests to the server"
+        echo "        bench_single_registry - Run a Benchmarking registering multiple peers creating multipe instances"
+        echo "        bench_registry - Run a Benchmarking registering multiple peers with a single instance of the program"
+        echo "        bench_download - Run a Benchmarking with multiple downloads to other peers"
+        echo "        create_directory - Create directory with text files for testing the system"
         echo "        Type 'help command' to know more about each one"
         echo "        "
     elif [ $1 = "run_server" ]; then
@@ -161,10 +164,10 @@ help(){
             echo "        "
             echo "        run_client directory port serverAddress serverPort"
             echo "        "
-    elif [ $1 = "benchmarking" ]; then
+    elif [ $1 = "bench_lookup" ]; then
             echo "        "
             echo "        Run a Benchmarking with multiple requests to the server"
-            echo "        benchmarking numNodes folderName fileName numRequests"
+            echo "        bench_lookup numNodes folderName fileName numRequests"
             echo "        "
             echo "        - numNodes: number of nodes"
             echo "        - folderName: the benchmarking is a peer so needs a folder name to register to the Server"
@@ -173,7 +176,53 @@ help(){
             echo "        "
             echo "        or"
             echo "        "
-            echo "        benchmarking numNodes folderName fileName numRequests serverAddress serverPort"
+            echo "        bench_lookup numNodes folderName fileName numRequests serverAddress serverPort"
+            echo "        "
+    elif [ $1 = "bench_single_registry" ]; then
+            echo "        "
+            echo "        Run a Benchmarking registering multiple peers creating multipe instances"
+            echo "        bench_single_registry numPeers folderName"
+            echo "        "
+            echo "        - numPeers: number of Peers rgistering"
+            echo "        - folderName: the benchmarking is a peer so needs a folder name to register to the Server"
+            echo "        "
+            echo "        or"
+            echo "        "
+            echo "        bench_single_registry numPeers folderName serverAddress serverPort"
+            echo "        "
+    elif [ $1 = "bench_registry" ]; then
+            echo "        "
+            echo "        Run a Benchmarking registering multiple peers with a single instance of the program"
+            echo "        bench_registry folderName numPeers"
+            echo "        "
+            echo "        - folderName: the benchmarking is a peer so needs a folder name to register to the Server"
+            echo "        - numPeers: number of Peers rgistering"
+            echo "        "
+            echo "        or"
+            echo "        "
+            echo "        bench_registry folderName numPeers serverAddress serverPort"
+            echo "        "
+    elif [ $1 = "bench_download" ]; then
+            echo "        "
+            echo "        Run a Benchmarking with multiple downloads to other peers"
+            echo "        bench_download numNodes folderName fileName numRequests"
+            echo "        "
+            echo "        - numNodes: number of nodes"
+            echo "        - folderName: the benchmarking is a peer so needs a folder name to register to the Server"
+            echo "        - fileName: the file you want to search in the Server"
+            echo "        - numRequests: number of requests per node"
+            echo "        "
+            echo "        or"
+            echo "        "
+            echo "        bench_download numNodes folderName fileName numRequests serverAddress serverPort"
+            echo "        "
+    elif [ $1 = "create_directory" ]; then
+            echo "        "
+            echo "        Create directory with text files for testing the system"
+            echo "        create_directory folderName numFiles"
+            echo "        "
+            echo "        - folderName: Folder name that will be created to put the text files on"
+            echo "        - numFiles : number of files that will be created in the created folder"
             echo "        "
     fi
 }
