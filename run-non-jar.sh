@@ -137,7 +137,11 @@ help(){
         echo "        "
         echo "        run_server - Run the Central Indexing Server"
         echo "        run_client - Run a Peer"
-        echo "        benchmarking - Run a Benchmarking with multiple requests to the server"
+        echo "        bench_lookup - Run a Benchmarking with multiple requests to the server"
+        echo "        bench_single_registry - Run a Benchmarking with multiple requests to the server"
+        echo "        bench_registry - Run a Benchmarking with multiple requests to the server"
+        echo "        bench_download - Run a Benchmarking with multiple requests to the server"
+        echo "        create_directory - Run a Benchmarking with multiple requests to the server"
         echo "        Type 'help command' to know more about each one"
         echo "        "
     elif [ $1 = "run_server" ]; then
