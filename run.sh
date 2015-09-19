@@ -26,16 +26,16 @@ run_client()
     SERVER=$3
     SERVERPORT=$4
 
-    if [ $# -lt 2 ]; then
-        echo "It should be run_client directory port"
-    elif [ $# -lt 2 ]; then
+    if [ $# -eq 2 ]; then
+        java -jar -classpath build/ Client.jar $DIRECTORY $PORT
+    elif [ $# -eq 4 ]; then
         java -jar -classpath build/ Client.jar $DIRECTORY $PORT $SERVER $SERVERPORT
     else
-        java -jar -classpath build/ Client.jar $DIRECTORY $PORT
+        echo "It should be run_client directory port"
     fi
 }
 
-benchmarking()
+bench_lookup()
 {
     N=$1
     PORT=13000
@@ -45,18 +45,76 @@ benchmarking()
     SERVER=$5
     SERVERPORT=$6
 
-    if [ $# -lt 4 ]; then
-        echo "It should be benchmarking numNodes folderName fileName numRequests"
-    elif [ $# -gt 4 ]; then
+    if [ $# -eq 4 ]; then
         for ((i=0; i<N; i++)); do
-            java -jar -classpath build/ Benchmarking.jar $FOLDERNAME $(($PORT+$i)) $FILENAME $NUMREQUESTS $SERVER $SERVERPORT &
+            java -jar -classpath build/ BenchLookup.jar $FOLDERNAME $(($PORT+$i)) $FILENAME $NUMREQUESTS &
+        done
+    elif [ $# -eq 6 ]; then
+        for ((i=0; i<N; i++)); do
+            java -jar -classpath build/ BenchLookup.jar $FOLDERNAME $(($PORT+$i)) $FILENAME $NUMREQUESTS $SERVER $SERVERPORT &
         done
     else
-        for ((i=0; i<N; i++)); do
-            java -jar -classpath build/ Benchmarking.jar $FOLDERNAME $(($PORT+$i)) $FILENAME $NUMREQUESTS $SERVER $SERVERPORT &
-        done
+        echo "It should be benchmarking numNodes folderName fileName numRequests"
     fi
 
+}
+
+bench_download()
+{
+    N=$1
+    PORT=13000
+    FOLDERNAME=$2
+    FILENAME=$3
+    NUMREQUESTS=$4
+    SERVER=$5
+    SERVERPORT=$6
+
+    if [ $# -eq 6 ]; then
+        for ((i=0; i<N; i++)); do
+            java -jar -classpath build/ BenchDownloadjar $FOLDERNAME $(($PORT+$i)) $FILENAME $NUMREQUESTS $SERVER $SERVERPORT &
+        done
+    elif [ $# -eq 4 ]; then
+        for ((i=0; i<N; i++)); do
+            java -jar -classpath build/ BenchDownload.jar $FOLDERNAME $(($PORT+$i)) $FILENAME $NUMREQUESTS &
+        done
+    else
+        echo "It should be benchmarking numNodes folderName fileName numRequests"
+    fi
+
+}
+
+bench_single_registry(){
+
+    N=$1
+    PORT=13000
+    FOLDERNAME=$2
+
+    if [ $# -eq 4 ]; then
+        for ((i=0; i<N; i++)); do
+            java -jar -classpath build/ BenchSingleRegistry.jar $FOLDERNAME $(($PORT+$i)) $SERVER $SERVERPORT &
+        done
+    elif [ $# -eq 2 ]; then
+        for ((i=0; i<N; i++)); do
+            java -jar -classpath build/ BenchSingleRegistry.jar $FOLDERNAME $(($PORT+$i)) &
+        done
+    else
+        echo "It should be bench_registry numPeers folderName"
+    fi
+}
+
+bench_registry(){
+
+    PORT=13000
+    FOLDERNAME=$1
+    NUMPEERS=$2
+
+    if [ $# -eq 4 ]; then
+        java -jar -classpath build/ BenchRegistry.jar $FOLDERNAME $(($PORT+$i)) $NUMPEERS $SERVER $SERVERPORT &
+    elif [ $# -eq 2 ]; then
+        java -jar -classpath build/ BenchRegistry.jar $FOLDERNAME $(($PORT+$i)) $NUMPEERS &
+    else
+        echo "It should be bench_registry folderName numPeers"
+    fi
 }
 
 create_directory(){

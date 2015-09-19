@@ -24,12 +24,12 @@ run_client()
     SERVER=$3
     SERVERPORT=$4
 
-    if [ $# -lt 2 ]; then
-        echo "It should be run_client directory port"
-    elif [ $# -gt 2 ]; then
+    if [ $# -eq 2 ]; then
+        java -classpath bin/ client.Client $DIRECTORY $PORT
+    elif [ $# -eq 4 ]; then
         java -classpath bin/ client.Client $DIRECTORY $PORT $SERVER $SERVERPORT
     else
-        java -classpath bin/ client.Client $DIRECTORY $PORT
+        echo "It should be run_client directory port"
     fi
 }
 
@@ -43,16 +43,16 @@ bench_lookup()
     SERVER=$5
     SERVERPORT=$6
 
-    if [ $# -lt 4 ]; then
-        echo "It should be benchmarking numNodes folderName fileName numRequests"
-    elif [ $# -gt 4 ]; then
+    if [ $# -eq 4 ]; then
+        for ((i=0; i<N; i++)); do
+            java -classpath bin/ bench.BenchLookup $FOLDERNAME $(($PORT+$i)) $FILENAME $NUMREQUESTS &
+        done
+    elif [ $# -eq 6 ]; then
         for ((i=0; i<N; i++)); do
             java -classpath bin/ bench.BenchLookup $FOLDERNAME $(($PORT+$i)) $FILENAME $NUMREQUESTS $SERVER $SERVERPORT &
         done
     else
-        for ((i=0; i<N; i++)); do
-            java -classpath bin/ bench.BenchLookup $FOLDERNAME $(($PORT+$i)) $FILENAME $NUMREQUESTS &
-        done
+        echo "It should be benchmarking numNodes folderName fileName numRequests"
     fi
 
 }
@@ -67,37 +67,36 @@ bench_download()
     SERVER=$5
     SERVERPORT=$6
 
-    if [ $# -lt 4 ]; then
-        echo "It should be benchmarking numNodes folderName fileName numRequests"
-    elif [ $# -gt 4 ]; then
+    if [ $# -eq 6 ]; then
         for ((i=0; i<N; i++)); do
             java -classpath bin/ bench.BenchDownload $FOLDERNAME $(($PORT+$i)) $FILENAME $NUMREQUESTS $SERVER $SERVERPORT &
         done
-    else
+    elif [ $# -eq 4 ]; then
         for ((i=0; i<N; i++)); do
             java -classpath bin/ bench.BenchDownload $FOLDERNAME $(($PORT+$i)) $FILENAME $NUMREQUESTS &
         done
+    else
+        echo "It should be benchmarking numNodes folderName fileName numRequests"
     fi
 
 }
 
-bench__single_registry(){
+bench_single_registry(){
 
     N=$1
     PORT=13000
     FOLDERNAME=$2
-    NUMPEERS=$3
 
-    if [ $# -lt 2 ]; then
-        echo "It should be bench_registry numPeers folderName"
-    elif [ $# -gt 2 ]; then
+    if [ $# -eq 4 ]; then
         for ((i=0; i<N; i++)); do
             java -classpath bin/ bench.BenchSingleRegistry $FOLDERNAME $(($PORT+$i)) $SERVER $SERVERPORT &
         done
-    else
+    elif [ $# -eq 2 ]; then
         for ((i=0; i<N; i++)); do
             java -classpath bin/ bench.BenchSingleRegistry $FOLDERNAME $(($PORT+$i)) &
         done
+    else
+        echo "It should be bench_registry numPeers folderName"
     fi
 }
 
@@ -107,12 +106,12 @@ bench_registry(){
     FOLDERNAME=$1
     NUMPEERS=$2
 
-    if [ $# -lt 2 ]; then
-        echo "It should be bench_registry folderName numPeers"
-    elif [ $# -gt 2 ]; then
+    if [ $# -eq 4 ]; then
+        java -classpath bin/ bench.BenchRegistry $FOLDERNAME $(($PORT+$i)) $NUMPEERS $SERVER $SERVERPORT &
+    elif [ $# -eq 2 ]; then
         java -classpath bin/ bench.BenchRegistry $FOLDERNAME $(($PORT+$i)) $NUMPEERS &
     else
-        java -classpath bin/ bench.BenchRegistry $FOLDERNAME $(($PORT+$i)) $NUMPEERS $SERVER $SERVERPORT &
+        echo "It should be bench_registry folderName numPeers"
     fi
 }
 
