@@ -1,8 +1,8 @@
 # Simple Peer to Peer File Sharing System
 
-To run the project you need [ant](https://ant.apache.org/) and java in a linux environment.
+To run the project you need [ant](https://ant.apache.org/) and java in a linux environment. If you don't want to create Jar files, you can use the script [run-non-jar.sh](https://github.com/gmendonca/simple-p2p-file-sharing/blob/master/run-non-jar.sh)
 
-First you need to run the script (has to be done with source):
+First you need to run the [script](https://github.com/gmendonca/simple-p2p-file-sharing/blob/master/run.sh) (has to be done with source):
 
 ```sh
 $ source run.sh
