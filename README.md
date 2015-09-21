@@ -38,7 +38,7 @@ There aren't possible option here, but this will only work with a working versio
 
 ### run_server
 
-By default it runs the server at the port 3434, to change it you have to use:
+By default, it runs the server at the port 3434, to change it you have to use:
 
 ```sh
 $ run_server portNumber
