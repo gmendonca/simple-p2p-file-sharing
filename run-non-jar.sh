@@ -59,7 +59,7 @@ bench_lookup()
 bench_download()
 {
     N=$1
-    PORT=13000
+    PORT=13500
     FOLDERNAME=$2
     FILENAME=$3
     NUMREQUESTS=$4

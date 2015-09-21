@@ -27,6 +27,7 @@ public class Peer {
 	private int port;
 	private PeerQueue<Connection> peerQueue;
 	private int numThreads = 4;
+	public ServerSocket serverSocket;
 	
 	public Peer(String directory, ArrayList<String> fileNames, int numFiles, String address, int port) throws IOException{
 		this.directory = directory;
@@ -181,14 +182,13 @@ public class Peer {
     
     public void server() throws IOException{
 		
-		@SuppressWarnings("resource")
-		ServerSocket serverSocket = new ServerSocket(port);
-		
-		/*while(true){
-			System.out.println("Waiting for peer...");
-			Socket socket = serverSocket.accept();
-			new Server(socket, directory).start();
-		}*/
+    	System.out.println("port = " + port);
+    	
+    	try {
+    		serverSocket = new ServerSocket(port);
+    	} catch(Exception e){
+    		return;
+    	}
 		
 		while(true){
 			Socket socket = serverSocket.accept();
@@ -227,13 +227,13 @@ public class Peer {
 		
 	}
     
-    public void download(String peerAddress, int port, String fileName)  throws IOException {
+    public void download(String peerAddress, int port, String fileName, int i)  throws IOException {
     	Socket socket = new Socket(peerAddress, port);
     	DataOutputStream dOut = new DataOutputStream(socket.getOutputStream());
     	dOut.writeUTF(fileName);
         InputStream in = socket.getInputStream();
         
-        String folder = "peer" + peerId + "-downloads/";
+        String folder = "downloads-peer" + peerId + "/";
         File f = new File(folder);
         Boolean created = false;
         if (!f.exists()){
@@ -245,6 +245,8 @@ public class Peer {
         }else {
         	created = true;
         }
+        
+        if(i != -1) fileName = fileName + i;
         
         OutputStream out = (created) ? new FileOutputStream(f.toString() + "/" + fileName) : new FileOutputStream(fileName);
         Util.copy(in, out);

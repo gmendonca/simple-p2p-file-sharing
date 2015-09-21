@@ -23,7 +23,7 @@ public class Server extends Thread{
 		try{
 	        DataInputStream dIn = new DataInputStream(socket.getInputStream());
 	        String fileName = dIn.readUTF();
-	        InputStream in = new FileInputStream(directory + fileName);
+	        InputStream in = new FileInputStream(directory + "/" + fileName);
 	        OutputStream out = socket.getOutputStream();
 	        Util.copy(in, out);
 	        dIn.close();

@@ -97,7 +97,7 @@ public class Client {
     				System.out.println("Lookup for the peer first.");
     			}else if(peerAddress.length == 1){
     				String[] addrport = peerAddress[0].split(":");
-    				peer.download(addrport[0], Integer.parseInt(addrport[1]), fileName);
+    				peer.download(addrport[0], Integer.parseInt(addrport[1]), fileName, -1);
     			}else {
     				System.out.println("Select from which peer you want to Download the file:");
     				for(int i = 0; i < peerAddress.length; i++){
@@ -109,7 +109,7 @@ public class Client {
     					optpeer = scanner.nextInt();
     				}
     				String[] addrport = peerAddress[optpeer-1].split(":");
-    				peer.download(addrport[0], Integer.parseInt(addrport[1]), fileName);
+    				peer.download(addrport[0], Integer.parseInt(addrport[1]), fileName, -1);
     			}
     		}else{
     			scanner.close();
