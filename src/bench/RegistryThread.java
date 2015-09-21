@@ -1,28 +1,22 @@
 package bench;
 
-import java.io.IOException;
 import java.net.Socket;
-import java.net.UnknownHostException;
 
 import client.Peer;
 
 public class RegistryThread extends Thread{
 	private Peer peer;
-	private String serverAddress;
-	private int serverPort;
+	private Socket socket;
 	
-	public RegistryThread(Peer peer, String serverAddress, int serverPort){
+	public RegistryThread(Peer peer, Socket socket){
 		this.peer = peer;
-		this.serverAddress = serverAddress;
-		this.serverPort = serverPort;
+		this.socket = socket;
 	}
 	
 	public void run(){
 		try {
-			peer.register(new Socket(serverAddress, serverPort));
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
+			peer.register(socket);
+		}catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

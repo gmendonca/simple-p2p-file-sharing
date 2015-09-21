@@ -18,14 +18,27 @@ public class BenchDownload{
 	public static void sendRequests(Peer peer, String fileName, int numRequests) throws IOException{
 		long startTime = System.currentTimeMillis();
 		
-		String peerAddress[];
+		String peerAddress[] = new String[0];
 		
 		long start;
 		for(int i = 0; i < numRequests; i++){
 			start = System.currentTimeMillis();
 			peerAddress = peer.lookup(fileName, new Socket(serverAddress, serverPort), i);
-			String[] addrport = peerAddress[0].split(":");
-			peer.download(addrport[0], Integer.parseInt(addrport[1]), fileName, i);
+			if(peerAddress.length > 0){
+				String[] addrport = null;
+				for(int j = 0; j < peerAddress.length; j++){
+					addrport = peerAddress[j].split(":");
+					if(addrport[2].equals(Integer.toString(peer.getPeerId()))){
+						System.out.println("This peer has the file already, not downloading then.");
+					}else{
+						System.out.println("Downloading from peer " + addrport[2] + ": " + addrport[0] + ":" + addrport[1]);
+						peer.download(addrport[0], Integer.parseInt(addrport[1]), fileName, i);
+						break;
+					}
+				}
+			}else {
+				System.out.println("Not downloading because file was not found.");
+			}
 			System.out.println("Took " + (System.currentTimeMillis() - start) + " ms.");
 		}
 		
@@ -77,7 +90,14 @@ public class BenchDownload{
     	
     	ArrayList<String> fileNames = Util.listFilesForFolder(folder);
     	final Peer peer = new Peer(dir, fileNames, fileNames.size(), address, port);
-    	peer.register(new Socket(serverAddress, serverPort));
+    	Socket socket = null;
+    	try {
+    		socket = new Socket(serverAddress, serverPort);
+    	}catch (IOException e){
+    		System.out.println("There isn't any instance of server running. Start one first!");
+    		return;
+    	}
+    	peer.register(socket);
     	
     	try {
 			Thread.sleep(2);

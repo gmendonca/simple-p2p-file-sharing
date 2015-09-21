@@ -74,10 +74,17 @@ public class BenchLookup {
     		System.out.println("Put a valid port number");
     	}
     	
-    	Socket socket = new Socket(serverAddress, serverPort);
+    	
     	
     	ArrayList<String> fileNames = Util.listFilesForFolder(folder);
     	Peer peer = new Peer(dir, fileNames, fileNames.size(), address, port);
+    	Socket socket = null;
+    	try {
+    		socket = new Socket(serverAddress, serverPort);
+    	}catch (IOException e){
+    		System.out.println("There isn't any instance of server running. Start one first!");
+    		return;
+    	}
     	peer.register(socket);
     	
     	try {

@@ -134,7 +134,7 @@ public class Peer {
     	socket.close();
     	
     	//System.out.println("Running as Peer " + peerId + "! " + "Took " + (System.currentTimeMillis() - start) + "ms.");
-    	System.out.println((System.currentTimeMillis() - start) + " ms");
+    	System.out.println("Took " + (System.currentTimeMillis() - start) + " ms to register in the server.");
 	}
 
     public String[] lookup(String fileName, Socket socket, int count) throws IOException{
@@ -167,7 +167,8 @@ public class Peer {
     			}catch (EOFException e){
     				i--;
     			}
-    			System.out.println("Peer " + peerAddress[i] + " has the file " + fileName + "! - Looked by Peer " + peerId);
+    			String paddress[] = peerAddress[i].split(":");
+    			System.out.println("Peer " + paddress[2] + " - " + paddress[0] +":" + paddress[1] + " has the file " + fileName + "! - Looked by Peer " + peerId);
     		}
     	} else if(found == 0){
     		System.out.println("File not found in the system");
@@ -181,8 +182,6 @@ public class Peer {
     }
     
     public void server() throws IOException{
-		
-    	System.out.println("port = " + port);
     	
     	try {
     		serverSocket = new ServerSocket(port);

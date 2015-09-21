@@ -54,7 +54,14 @@ public class Client {
     	
     	ArrayList<String> fileNames = Util.listFilesForFolder(folder);
     	final Peer peer = new Peer(dir, fileNames, fileNames.size(), address, port);
-    	peer.register(new Socket(serverAddress, serverPort));
+    	Socket socket = null;
+    	try {
+    		socket = new Socket(serverAddress, serverPort);
+    	}catch (IOException e){
+    		System.out.println("There isn't any instance of server running. Start one first!");
+    		return;
+    	}
+    	peer.register(socket);
     	
     	new Thread(){
     		public void run(){
@@ -80,7 +87,7 @@ public class Client {
     	
     	Scanner scanner = new Scanner(System.in);
     	while(true){
-    		System.out.println("Select the option:");
+    		System.out.println("\n\nSelect the option:");
     		System.out.println("1 - Lookup for a file");
     		System.out.println("2 - Download file");
     		
@@ -95,8 +102,11 @@ public class Client {
     		else if (option == 2){
     			if(peerAddress.length == 0){
     				System.out.println("Lookup for the peer first.");
+    			}else if(peerAddress.length == 1 && Integer.parseInt(peerAddress[0].split(":")[2]) == peer.getPeerId()){
+    				System.out.println("This peer has the file already, not downloading then.");
     			}else if(peerAddress.length == 1){
     				String[] addrport = peerAddress[0].split(":");
+    				System.out.println("Downloading from peer " + addrport[2] + ": " + addrport[0] + ":" + addrport[1]);
     				peer.download(addrport[0], Integer.parseInt(addrport[1]), fileName, -1);
     			}else {
     				System.out.println("Select from which peer you want to Download the file:");

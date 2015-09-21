@@ -116,7 +116,7 @@ public class Server extends Thread {
 						//System.out.println(peerList.size());
 						for(Peer p : peerList){
 							//System.out.println(p.getAddress() + p.getPort());
-							dOut.writeUTF(p.getAddress() + ":" + p.getPort());
+							dOut.writeUTF(p.getAddress() + ":" + p.getPort() + ":" + p.getPeerId());
 							dOut.flush();
 						}
 					}else {

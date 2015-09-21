@@ -3,6 +3,7 @@ package bench;
 import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -63,9 +64,17 @@ public class BenchRegistry {
     	}
     	
     	ExecutorService executor = Executors.newFixedThreadPool(numThreads);
-
+    	
+    	Socket socket = null;
+    	
 		for(int i = 0; i < numPeers; i++){
-			RegistryThread rt = new RegistryThread(new Peer(dir, fileNames, fileNames.size(), address, port + i), serverAddress, serverPort);
+			try {
+	    		socket = new Socket(serverAddress, serverPort);
+	    	}catch (IOException e){
+	    		System.out.println("There isn't any instance of server running. Start one first!");
+	    		return;
+	    	}
+			RegistryThread rt = new RegistryThread(new Peer(dir, fileNames, fileNames.size(), address, port + i), socket);
 			executor.execute(rt);
 		}
     }
