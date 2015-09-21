@@ -20,9 +20,9 @@ public class BenchDownload{
 		
 		String peerAddress[] = new String[0];
 		
-		long start;
+		//long start;
 		for(int i = 0; i < numRequests; i++){
-			start = System.currentTimeMillis();
+			//start = System.currentTimeMillis();
 			peerAddress = peer.lookup(fileName, new Socket(serverAddress, serverPort), i);
 			if(peerAddress.length > 0){
 				String[] addrport = null;
@@ -31,7 +31,7 @@ public class BenchDownload{
 					if(addrport[2].equals(Integer.toString(peer.getPeerId()))){
 						System.out.println("This peer has the file already, not downloading then.");
 					}else{
-						System.out.println("Downloading from peer " + addrport[2] + ": " + addrport[0] + ":" + addrport[1]);
+						//System.out.println("Downloading from peer " + addrport[2] + ": " + addrport[0] + ":" + addrport[1]);
 						peer.download(addrport[0], Integer.parseInt(addrport[1]), fileName, i);
 						break;
 					}
@@ -39,7 +39,7 @@ public class BenchDownload{
 			}else {
 				System.out.println("Not downloading because file was not found.");
 			}
-			System.out.println("Took " + (System.currentTimeMillis() - start) + " ms.");
+			//System.out.println("Took " + (System.currentTimeMillis() - start) + " ms.");
 		}
 		
 		long stopTime = System.currentTimeMillis();

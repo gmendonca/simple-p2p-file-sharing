@@ -96,7 +96,7 @@ public class Peer {
     public void register(Socket socket) throws IOException {
     	
     	//System.out.println("Connecting to the server...");
-    	//long start = System.currentTimeMillis();
+    	long start = System.currentTimeMillis();
     	DataOutputStream dOut = new DataOutputStream(socket.getOutputStream());
     	
     	//Option to register in the server (new peer)
@@ -135,6 +135,7 @@ public class Peer {
     	
     	//System.out.println("Running as Peer " + peerId + "! " + "Took " + (System.currentTimeMillis() - start) + "ms.");
     	//System.out.println("Took " + (System.currentTimeMillis() - start) + " ms to register in the server.");
+    	//System.out.println((System.currentTimeMillis() - start) + " ms");
 	}
 
     public String[] lookup(String fileName, Socket socket, int count) throws IOException{
@@ -249,7 +250,7 @@ public class Peer {
         
         OutputStream out = (created) ? new FileOutputStream(f.toString() + "/" + fileName) : new FileOutputStream(fileName);
         Util.copy(in, out);
-        System.out.println("File " + fileName + " recieved from peer " + peerAddress + ":" + port);
+        //System.out.println("File " + fileName + " recieved from peer " + peerAddress + ":" + port);
         dOut.close();
         out.close();
         in.close();

@@ -25,11 +25,11 @@ public class Util {
 	public static void copy(InputStream in, OutputStream out) throws IOException {
         byte[] buffer = new byte[1024];
         int count = 0;
-        long start = System.currentTimeMillis();
+        //long start = System.currentTimeMillis();
         while ((count = in.read(buffer)) != -1) {
             out.write(buffer, 0, count);
         }
-        System.out.println("Download took " + (System.currentTimeMillis() - start) + " ms.");
+        //System.out.println("Download took " + (System.currentTimeMillis() - start) + " ms.");
     }
 	
 	public static long toSeconds(long start, long end){
