@@ -53,7 +53,7 @@ For the client there are two possibilities, the first one uses the default addre
 
 2. Uses the Central Indexing Server address defined by the user:
     ```sh
-    run_client directory port serverAddress serverPort
+    $ run_client directory port serverAddress serverPort
     ```
 
 ### bench_lookup
@@ -62,11 +62,11 @@ For the Benchmarking of sending Lookup requests to the server, you can use like 
 
 1. Uses the Central Indexing Server at localhost:3434
     ```sh
-    bench_lookup numNodes folderName fileName numRequests
+    $ bench_lookup numNodes folderName fileName numRequests
     ```
 2. Uses the Central Indexing Server address defined by the user:
     ```sh
-    bench_lookup numNodes folderName fileName numRequests serverAddress serverPort
+    $ bench_lookup numNodes folderName fileName numRequests serverAddress serverPort
     ```
 
 - numNodes: number of nodes
@@ -76,10 +76,65 @@ For the Benchmarking of sending Lookup requests to the server, you can use like 
 
 ### bench_single_registry
 
+For the Benchmarking of registering peers to the server, you can use like below. In this one, it will run the program 'numPeers' times.
+
+1. Uses the Central Indexing Server at localhost:3434
+    ```sh
+    $ bench_single_registry numPeers folderName
+    ```
+2. Uses the Central Indexing Server address defined by the user:
+    ```sh
+    $ bench_single_registry numPeers folderName serverAddress serverPort
+    ```
+
+- numPeers: number of Peers registering
+- folderName: the benchmarking is a peer so needs a folder name to register to the Server
+
 ### bench_registry
+
+For the Benchmarking of registering peers to the server, you can use like below. In this one, it will run the program just once and will register 'numPeers' peers using a pool of threads for the concurrency.
+
+1. Uses the Central Indexing Server at localhost:3434
+    ```sh
+    $ bench_registry folderName numPeers
+    ```
+2. Uses the Central Indexing Server address defined by the user:
+    ```sh
+    $ bench_registry folderName numPeers serverAddress serverPort
+    ```
+
+- numPeers: number of Peers registering
+- folderName: the benchmarking is a peer so needs a folder name to register to the Server
 
 ### bench_download
 
+For the Benchmarking of downloading files from other peer, you can use like this:
+
+1. Uses the Central Indexing Server at localhost:3434
+    ```sh
+    $ bench_download numNodes folderName fileName numRequests
+    ```
+2. Uses the Central Indexing Server address defined by the user:
+    ```sh
+    $ bench_download numNodes folderName fileName numRequests serverAddress serverPort
+    ```
+
+- numNodes: number of nodes
+- folderName: the benchmarking is a peer so needs a folder name to register to the Server
+- fileName: the file you want to search in the Server
+- numRequests: number of requests per node
+
 ### create_directory
 
+This command will create a directory and random text files(1~20K) in order to test the system. It uses base64, so check if your Linux distro has it. Make any changes if needed. You can use this like this:
+
+```sh
+$ create_directory folderName numFiles
+```
+
+- folderName: Folder name that will be created to put the text files on
+- numFiles : number of files that will be created in the created folder
+
 ### help
+
+You can type ```sh $ help``` to view all the commands possible, and ```sh $ help 'command'``` to know more about the command.
