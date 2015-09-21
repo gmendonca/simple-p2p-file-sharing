@@ -137,4 +137,4 @@ $ create_directory folderName numFiles
 
 ### help
 
-You can type ```sh $ help``` to view all the commands possible, and ```sh $ help 'command'``` to know more about the command.
+You can type ```$ help``` to view all the commands possible, and ```$ help 'command'``` to know more about the command.
