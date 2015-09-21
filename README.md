@@ -129,9 +129,9 @@ For the Benchmarking of downloading files from other peer, you can use like this
 
 This command will create a directory and random text files(1~20K) in order to test the system. It uses base64, so check if your Linux distro has it. Make any changes if needed. You can use this like this:
 
-```sh
-$ create_directory folderName numFiles
-```
+    ```sh
+    $ create_directory folderName numFiles
+    ```
 
 - folderName: Folder name that will be created to put the text files on
 - numFiles : number of files that will be created in the created folder
