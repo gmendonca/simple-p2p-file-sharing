@@ -27,6 +27,7 @@ A quickly overview of the files are shown above:
 * [bench_registry](https://github.com/gmendonca/simple-p2p-file-sharing#bench_registry) - Benchmark the system.
 * [bench_download](https://github.com/gmendonca/simple-p2p-file-sharing#bench_download) - Benchmark the system.
 * [create_directory](https://github.com/gmendonca/simple-p2p-file-sharing#create_directory) - Create a test directory.
+* [help](https://github.com/gmendonca/simple-p2p-file-sharing#help) - Help command for the script.
 
 
 ## Commands
