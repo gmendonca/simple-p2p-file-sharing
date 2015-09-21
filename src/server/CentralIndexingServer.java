@@ -33,11 +33,11 @@ public class CentralIndexingServer {
 				peerQueue.add(socket);
 				//System.out.println("Added to queue.");
 			}
-			try {
+			/*try {
 				Thread.sleep(1);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
-			}
+			}*/
 			
 		}
 		
@@ -49,7 +49,7 @@ public class CentralIndexingServer {
 
 		while(true){
 			try {
-				Thread.sleep(2);
+				Thread.sleep(1);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

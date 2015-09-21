@@ -96,7 +96,7 @@ public class Peer {
     public void register(Socket socket) throws IOException {
     	
     	//System.out.println("Connecting to the server...");
-    	long start = System.currentTimeMillis();
+    	//long start = System.currentTimeMillis();
     	DataOutputStream dOut = new DataOutputStream(socket.getOutputStream());
     	
     	//Option to register in the server (new peer)
@@ -134,7 +134,7 @@ public class Peer {
     	socket.close();
     	
     	//System.out.println("Running as Peer " + peerId + "! " + "Took " + (System.currentTimeMillis() - start) + "ms.");
-    	System.out.println("Took " + (System.currentTimeMillis() - start) + " ms to register in the server.");
+    	//System.out.println("Took " + (System.currentTimeMillis() - start) + " ms to register in the server.");
 	}
 
     public String[] lookup(String fileName, Socket socket, int count) throws IOException{
@@ -150,7 +150,7 @@ public class Peer {
     	dOut.flush();
     	//System.out.println("Reading from the server...");
     	
-    	System.out.println("Peer " + peerId + " - looking for file. (" + count + ")");
+    	//System.out.println("Peer " + peerId + " - looking for file. (" + count + ")");
     	
     	//Reading the peer Address that has the file
     	DataInputStream dIn = new DataInputStream(socket.getInputStream());
@@ -167,8 +167,8 @@ public class Peer {
     			}catch (EOFException e){
     				i--;
     			}
-    			String paddress[] = peerAddress[i].split(":");
-    			System.out.println("Peer " + paddress[2] + " - " + paddress[0] +":" + paddress[1] + " has the file " + fileName + "! - Looked by Peer " + peerId);
+    			//String paddress[] = peerAddress[i].split(":");
+    			//System.out.println("Peer " + paddress[2] + " - " + paddress[0] +":" + paddress[1] + " has the file " + fileName + "! - Looked by Peer " + peerId);
     		}
     	} else if(found == 0){
     		System.out.println("File not found in the system");
@@ -194,11 +194,11 @@ public class Peer {
 			synchronized(peerQueue){
 				peerQueue.add(new Connection(socket,directory));
 			}
-			try {
+			/*try {
 				Thread.sleep(2);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
-			}
+			}*/
 		}
 		
 	}
