@@ -97,6 +97,7 @@ public class Server extends Thread {
 					
 					dOut.writeInt(peerId);
 					dOut.flush();
+					socket.close();
 					break;
 				case 1:
 					String fileName = dIn.readUTF();
@@ -104,7 +105,7 @@ public class Server extends Thread {
 					Boolean b = search(fileName);
 					//TODO: see if I can do this with wait and notify, or find a better time and took it out from the overall time
 					try {
-						Thread.sleep(3);
+						Thread.sleep(1);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -122,8 +123,10 @@ public class Server extends Thread {
 						dOut.writeByte(0);
 						dOut.flush();
 					}
+					socket.close();
 					break;
-				default:					
+				default:
+					System.out.println("Not an option");
 				
 			}
 		}catch (IOException ioe){

@@ -34,7 +34,7 @@ public class CentralIndexingServer {
 				//System.out.println("Added to queue.");
 			}
 			try {
-				Thread.sleep(2);
+				Thread.sleep(1);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -48,17 +48,17 @@ public class CentralIndexingServer {
 		ExecutorService executor = Executors.newFixedThreadPool(numThreads);
 
 		while(true){
-			if(peerQueue.peek() == null){
-				try {
-					Thread.sleep(1);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				continue;
+			try {
+				Thread.sleep(2);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
+			if(peerQueue.peek() == null)
+				continue;
 			synchronized(peerQueue){
 				//System.out.println("Added to executor");
-				Server s = new Server(peerQueue.poll());
+				Socket socket = peerQueue.poll();
+				Server s = new Server(socket);
 				executor.execute(s);
 			}
 		}

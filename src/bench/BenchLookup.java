@@ -16,13 +16,15 @@ public class BenchLookup {
 	
 	
 	public static void sendRequests(Peer peer, String fileName, int numRequests) throws IOException{
+		
 		long startTime = System.currentTimeMillis();
 		
 		@SuppressWarnings("unused")
 		long start;
 		for(int i = 0; i < numRequests; i++){
 			start = System.currentTimeMillis();
-			peer.lookup(fileName, new Socket(serverAddress, serverPort), i);
+			Socket socket = new Socket(serverAddress,serverPort);
+			peer.lookup(fileName, socket, i);
 			//System.out.println("Took " + (System.currentTimeMillis() - start) + " ms.");
 		}
 		
@@ -32,8 +34,6 @@ public class BenchLookup {
 		System.out.println("==============================================================================================");
 		System.out.println("Overall - Peer " + peer.getPeerId() + " -> Took " + (stopTime-startTime) + " ms.");
 		System.out.println("==============================================================================================");
-		
-		
 	}
 
 	public static void main(String[] args) throws IOException {
@@ -74,9 +74,11 @@ public class BenchLookup {
     		System.out.println("Put a valid port number");
     	}
     	
+    	Socket socket = new Socket(serverAddress, serverPort);
+    	
     	ArrayList<String> fileNames = Util.listFilesForFolder(folder);
-    	final Peer peer = new Peer(dir, fileNames, fileNames.size(), address, port);
-    	peer.register(new Socket(serverAddress, serverPort));
+    	Peer peer = new Peer(dir, fileNames, fileNames.size(), address, port);
+    	peer.register(socket);
     	
     	try {
 			Thread.sleep(2);

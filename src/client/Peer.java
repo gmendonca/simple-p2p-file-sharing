@@ -149,8 +149,7 @@ public class Peer {
     	dOut.flush();
     	//System.out.println("Reading from the server...");
     	
-    	dOut.writeUTF("Peer " + peerId + " - looking for file. (" + count + ")");
-    	dOut.flush();
+    	System.out.println("Peer " + peerId + " - looking for file. (" + count + ")");
     	
     	//Reading the peer Address that has the file
     	DataInputStream dIn = new DataInputStream(socket.getInputStream());
@@ -167,7 +166,7 @@ public class Peer {
     			}catch (EOFException e){
     				i--;
     			}
-    			System.out.println("Peer " + peerAddress[i] + " has the file " + fileName + "!");
+    			System.out.println("Peer " + peerAddress[i] + " has the file " + fileName + "! - Looked by Peer " + peerId);
     		}
     	} else if(found == 0){
     		System.out.println("File not found in the system");
