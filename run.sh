@@ -12,9 +12,9 @@ run_server()
     PORT=$1
 
     if [ $# -eq 1 ]; then
-        java -jar -classpath build/ CentralIndexingServer.jar $PORT
+        java -jar build/CentralIndexingServer.jar $PORT
     else
-        java -jar -classpath build/ CentralIndexingServer.jar
+        java -jar build/CentralIndexingServer.jar
     fi
 }
 
@@ -26,9 +26,9 @@ run_client()
     SERVERPORT=$4
 
     if [ $# -eq 2 ]; then
-        java -jar -classpath build/ Client.jar $DIRECTORY $PORT
+        java -jar build/Client.jar $DIRECTORY $PORT
     elif [ $# -eq 4 ]; then
-        java -jar -classpath build/ Client.jar $DIRECTORY $PORT $SERVER $SERVERPORT
+        java -jar build/Client.jar $DIRECTORY $PORT $SERVER $SERVERPORT
     else
         echo "It should be run_client directory port"
     fi
@@ -46,11 +46,11 @@ bench_lookup()
 
     if [ $# -eq 4 ]; then
         for ((i=0; i<N; i++)); do
-            java -jar -classpath build/ BenchLookup.jar $FOLDERNAME $(($PORT+$i)) $FILENAME $NUMREQUESTS &
+            java -jar build/BenchLookup.jar $FOLDERNAME $(($PORT+$i)) $FILENAME $NUMREQUESTS &
         done
     elif [ $# -eq 6 ]; then
         for ((i=0; i<N; i++)); do
-            java -jar -classpath build/ BenchLookup.jar $FOLDERNAME $(($PORT+$i)) $FILENAME $NUMREQUESTS $SERVER $SERVERPORT &
+            java -jar build/BenchLookup.jar $FOLDERNAME $(($PORT+$i)) $FILENAME $NUMREQUESTS $SERVER $SERVERPORT &
         done
     else
         echo "It should be bench_lookup numNodes folderName fileName numRequests"
@@ -70,11 +70,11 @@ bench_download()
 
     if [ $# -eq 6 ]; then
         for ((i=0; i<N; i++)); do
-            java -jar -classpath build/ BenchDownloadjar $FOLDERNAME $(($PORT+$i)) $FILENAME $NUMREQUESTS $SERVER $SERVERPORT &
+            java -jar build/BenchDownloadjar $FOLDERNAME $(($PORT+$i)) $FILENAME $NUMREQUESTS $SERVER $SERVERPORT &
         done
     elif [ $# -eq 4 ]; then
         for ((i=0; i<N; i++)); do
-            java -jar -classpath build/ BenchDownload.jar $FOLDERNAME $(($PORT+$i)) $FILENAME $NUMREQUESTS &
+            java -jar build/BenchDownload.jar $FOLDERNAME $(($PORT+$i)) $FILENAME $NUMREQUESTS &
         done
     else
         echo "It should be bench_download numNodes folderName fileName numRequests"
@@ -90,11 +90,11 @@ bench_single_registry(){
 
     if [ $# -eq 4 ]; then
         for ((i=0; i<N; i++)); do
-            java -jar -classpath build/ BenchSingleRegistry.jar $FOLDERNAME $(($PORT+$i)) $SERVER $SERVERPORT &
+            java -jar build/BenchSingleRegistry.jar $FOLDERNAME $(($PORT+$i)) $SERVER $SERVERPORT &
         done
     elif [ $# -eq 2 ]; then
         for ((i=0; i<N; i++)); do
-            java -jar -classpath build/ BenchSingleRegistry.jar $FOLDERNAME $(($PORT+$i)) &
+            java -jar build/BenchSingleRegistry.jar $FOLDERNAME $(($PORT+$i)) &
         done
     else
         echo "It should be bench_single_registry numPeers folderName"
@@ -110,11 +110,11 @@ bench_registry_nodes(){
 
     if [ $# -eq 5 ]; then
         for ((i=0; i<N; i++)); do
-            java -jar -classpath build/ BenchRegistry.jar $FOLDERNAME $(($PORT+$i)) $NUMPEERS $SERVER $SERVERPORT &
+            java -jar build/BenchRegistry.jar $FOLDERNAME $(($PORT+$i)) $NUMPEERS $SERVER $SERVERPORT &
         done
     elif [ $# -eq 3 ]; then
         for ((i=0; i<N; i++)); do
-            java -jar -classpath build/ BenchRegistry.jar $FOLDERNAME $(($PORT+$i)) $NUMPEERS &
+            java -jar build/BenchRegistry.jar $FOLDERNAME $(($PORT+$i)) $NUMPEERS &
         done
     else
         echo "It should be bench_registry_nodes numPeers folderName numRegistryPerNode"
@@ -128,9 +128,9 @@ bench_registry(){
     NUMPEERS=$2
 
     if [ $# -eq 4 ]; then
-        java -jar -classpath build/ BenchRegistry.jar $FOLDERNAME $(($PORT+$i)) $NUMPEERS $SERVER $SERVERPORT &
+        java -jar build/BenchRegistry.jar $FOLDERNAME $(($PORT+$i)) $NUMPEERS $SERVER $SERVERPORT &
     elif [ $# -eq 2 ]; then
-        java -jar -classpath build/ BenchRegistry.jar $FOLDERNAME $(($PORT+$i)) $NUMPEERS &
+        java -jar build/BenchRegistry.jar $FOLDERNAME $(($PORT+$i)) $NUMPEERS &
     else
         echo "It should be bench_registry folderName numPeers"
     fi
