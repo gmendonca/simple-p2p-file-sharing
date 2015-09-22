@@ -89,7 +89,7 @@ public class BenchRegistry {
 		} catch (InterruptedException e) {
 			System.out.println("Couldn't wait for the tasks to fullfil!");
 		}
-		System.out.println("Average of Peer " + peer.getPeerId() + "'s "+ numRequests + " operations is " + Util.calculateAverage(times) + " ms.");
+		System.out.println("Average of Peer registry of "+ numPeers + " operations is " + Util.calculateAverage(times) + " ms.");
 		System.out.println("Overall time = " + (System.currentTimeMillis() - start) + " ms");
     }
 }
