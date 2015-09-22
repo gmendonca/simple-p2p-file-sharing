@@ -15,8 +15,8 @@ public class BenchDownload{
 	private static int serverPort = 3434;
 	
 	
-	//public static void sendRequests(Peer peer, String fileName, int numRequests) throws IOException{
-	public static void sendRequests(Peer peer, ArrayList<String> fileNames, int numRequests) throws IOException{
+	public static void sendRequests(Peer peer, String fileName, int numRequests) throws IOException{
+	//public static void sendRequests(Peer peer, ArrayList<String> fileNames, int numRequests) throws IOException{
 		
 		long startTime = System.currentTimeMillis();
 		
@@ -31,7 +31,8 @@ public class BenchDownload{
 		//long start;
 		for(int i = 0; i < numRequests; i++){
 			//start = System.currentTimeMillis();
-			peerAddress = peer.lookup(fileNames.get(count), new Socket(serverAddress, serverPort), i);
+			//peerAddress = peer.lookup(fileNames.get(count), new Socket(serverAddress, serverPort), i);
+			peerAddress = peer.lookup(fileName, new Socket(serverAddress, serverPort), i);
 			if(peerAddress.length > 0){
 				String[] addrport = null;
 				for(int j = 0; j < peerAddress.length; j++){
@@ -41,7 +42,8 @@ public class BenchDownload{
 					}else{
 						//System.out.println("Downloading from peer " + addrport[2] + ": " + addrport[0] + ":" + addrport[1]);
 						start = System.currentTimeMillis();
-						peer.download(addrport[0], Integer.parseInt(addrport[1]), fileNames.get(count), i);
+						//peer.download(addrport[0], Integer.parseInt(addrport[1]), fileNames.get(count), i);
+						peer.download(addrport[0], Integer.parseInt(addrport[1]), fileName, i);
 						times.add(System.currentTimeMillis() - start);
 						break;
 					}
@@ -139,8 +141,8 @@ public class BenchDownload{
     	}.start();
     	
     	String fileName = args[2];
-    	File folderDownload= new File(fileName);
-    	ArrayList<String> fileNamesDownload = Util.listFilesForFolder(folderDownload);
+    	//File folderDownload= new File(fileName);
+    	//ArrayList<String> fileNamesDownload = Util.listFilesForFolder(folderDownload);
     	
     	int numRequests = 100;
     	
@@ -150,7 +152,7 @@ public class BenchDownload{
     		System.out.println("Put a valid port number");
     	}
     	
-    	sendRequests(peer, fileNamesDownload, numRequests);
-    	//sendRequests(peer, fileName, numRequests);
+    	//sendRequests(peer, fileNamesDownload, numRequests);
+    	sendRequests(peer, fileName, numRequests);
     }
 }

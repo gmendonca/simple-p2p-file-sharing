@@ -137,7 +137,7 @@ public class Peer {
     	//System.out.println("Running as Peer " + peerId + "! " + "Took " + (System.currentTimeMillis() - start) + "ms.");
     	//System.out.println("Took " + (System.currentTimeMillis() - start) + " ms to register in the server.");
     	//System.out.println((System.currentTimeMillis() - start) + " ms");
-    	BenchRegistry.times.add((System.currentTimeMillis() - start));
+    	if(BenchRegistry.times != null) BenchRegistry.times.add((System.currentTimeMillis() - start));
 	}
 
     public String[] lookup(String fileName, Socket socket, int count) throws IOException{

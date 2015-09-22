@@ -18,7 +18,7 @@ public class BenchRegistry {
 
 	public static void main(String[] args) throws IOException {
 		
-		times = new ArrayList<Long>();
+		
 		
 		int numThreads = 4;
     	
@@ -71,6 +71,8 @@ public class BenchRegistry {
     	ExecutorService executor = Executors.newFixedThreadPool(numThreads);
     	
     	Socket socket = null;
+    	
+    	times = new ArrayList<Long>();
     	
     	long start = System.currentTimeMillis();
 		for(int i = 0; i < numPeers; i++){
