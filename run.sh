@@ -101,6 +101,26 @@ bench_single_registry(){
     fi
 }
 
+bench_registry_nodes(){
+
+    N=$1
+    PORT=13000
+    FOLDERNAME=$2
+    NUMPEERS=$3
+
+    if [ $# -eq 5 ]; then
+        for ((i=0; i<N; i++)); do
+            java -jar -classpath build/ BenchRegistry.jar $FOLDERNAME $(($PORT+$i)) $NUMPEERS $SERVER $SERVERPORT &
+        done
+    elif [ $# -eq 3 ]; then
+        for ((i=0; i<N; i++)); do
+            java -jar -classpath build/ BenchRegistry.jar $FOLDERNAME $(($PORT+$i)) $NUMPEERS &
+        done
+    else
+        echo "It should be bench_registry_nodes numPeers folderName numRegistryPerNode"
+    fi
+}
+
 bench_registry(){
 
     PORT=13000
@@ -202,6 +222,18 @@ help(){
             echo "        or"
             echo "        "
             echo "        bench_registry folderName numPeers serverAddress serverPort"
+            echo "        "
+    elif [ $1 = "bench_registry_nodes" ]; then
+            echo "        "
+            echo "        Run a Benchmarking registering multiple peers with a multiple registry of the peer"
+            echo "        bench_registry_nodes numPeers folderName numRegistryPerNode"
+            echo "        "
+            echo "        - folderName: the benchmarking is a peer so needs a folder name to register to the Server"
+            echo "        - numPeers: number of Peers registering"
+            echo "        "
+            echo "        or"
+            echo "        "
+            echo "        bench_registry_nodes numPeers folderName numRegistryPerNode serverAddress serverPort"
             echo "        "
     elif [ $1 = "bench_download" ]; then
             echo "        "

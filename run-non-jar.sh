@@ -115,7 +115,7 @@ bench_registry_nodes(){
             java -classpath bin/ bench.BenchRegistry $FOLDERNAME $(($PORT+$i)) $NUMPEERS &
         done
     else
-        echo "It should be bench_single_registry numPeers folderName"
+        echo "It should be bench_registry_nodes numPeers folderName numRegistryPerNode"
     fi
 }
 
@@ -208,6 +208,18 @@ help(){
             echo "        or"
             echo "        "
             echo "        bench_single_registry numPeers folderName serverAddress serverPort"
+            echo "        "
+    elif [ $1 = "bench_registry_nodes" ]; then
+            echo "        "
+            echo "        Run a Benchmarking registering multiple peers with a multiple registry of the peer"
+            echo "        bench_registry_nodes numPeers folderName numRegistryPerNode"
+            echo "        "
+            echo "        - folderName: the benchmarking is a peer so needs a folder name to register to the Server"
+            echo "        - numPeers: number of Peers registering"
+            echo "        "
+            echo "        or"
+            echo "        "
+            echo "        bench_registry_nodes numPeers folderName numRegistryPerNode serverAddress serverPort"
             echo "        "
     elif [ $1 = "bench_registry" ]; then
             echo "        "
