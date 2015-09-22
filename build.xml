@@ -19,7 +19,7 @@
         </jar>
 
         <jar destfile="build/Client.jar">
-          <fileset includes="client/*.class,util/*.class" dir="bin/"/>
+          <fileset includes="client/*.class,util/*.class,bench/*.class" dir="bin/"/>
           <manifest>
             <attribute name="Main-Class" value="client.Client"/>
           </manifest>

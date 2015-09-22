@@ -68,7 +68,7 @@ public class Server extends Thread {
 						 switch(messageType){
 						 	case 1:
 						 		numFiles = dIn.readInt();
-						 		System.out.println(numFiles);
+						 		System.out.println("\nPeer " + peerId + " registering with " + numFiles + " files:");
 						 		break;
 						 	case 2:
 						 		for(int i = 0; i < numFiles; i++){

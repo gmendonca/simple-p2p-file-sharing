@@ -27,7 +27,7 @@ public class CentralIndexingServer {
 		ServerSocket serverSocket = new ServerSocket(port);
 		
 		while(true){
-			//System.out.println("Waiting for peer...");
+			System.out.println("\nWaiting for peer...");
 			Socket socket = serverSocket.accept();
 			synchronized(peerQueue){
 				peerQueue.add(socket);

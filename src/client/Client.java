@@ -111,7 +111,8 @@ public class Client {
     			}else {
     				System.out.println("Select from which peer you want to Download the file:");
     				for(int i = 0; i < peerAddress.length; i++){
-    					System.out.println((i+1) + " - " + peerAddress[i]);
+    					String[] addrport = peerAddress[i].split(":");
+    					System.out.println((i+1) + " - " + addrport[0] + ":" + addrport[1]);
     				}
     				optpeer = scanner.nextInt();
     				while(optpeer > peerAddress.length || optpeer < 1){
