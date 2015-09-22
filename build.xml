@@ -26,28 +26,28 @@
         </jar>
 
         <jar destfile="build/BenchDownload.jar">
-          <fileset includes="client/*.class,util/*.class" dir="bin/"/>
+          <fileset includes="client/*.class,util/*.class,bench/*.class" dir="bin/"/>
           <manifest>
             <attribute name="Main-Class" value="bench.BenchDownload"/>
           </manifest>
         </jar>
 
         <jar destfile="build/BenchLookup.jar">
-          <fileset includes="client/*.class,util/*.class" dir="bin/"/>
+          <fileset includes="client/*.class,util/*.class,bench/*.class" dir="bin/"/>
           <manifest>
             <attribute name="Main-Class" value="bench.BenchLookup"/>
           </manifest>
         </jar>
 
         <jar destfile="build/BenchRegistry.jar">
-          <fileset includes="client/*.class,util/*.class" dir="bin/"/>
+          <fileset includes="client/*.class,util/*.class,bench/*.class" dir="bin/"/>
           <manifest>
             <attribute name="Main-Class" value="bench.BenchRegistry"/>
           </manifest>
         </jar>
 
         <jar destfile="build/BenchSingleRegistry.jar">
-          <fileset includes="client/*.class,util/*.class" dir="bin/"/>
+          <fileset includes="client/*.class,util/*.class,bench/*.class" dir="bin/"/>
           <manifest>
             <attribute name="Main-Class" value="bench.BenchSingleRegistry"/>
           </manifest>
