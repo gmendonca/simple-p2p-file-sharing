@@ -41,4 +41,15 @@ public class Util {
     	BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
     	return br.readLine();
 	}
+	
+	public static double calculateAverage(ArrayList<Long> times) {
+		  Long sum = 0L;
+		  if(!times.isEmpty()) {
+		    for (Long time : times) {
+		        sum += time;
+		    }
+		    return sum.doubleValue() / times.size();
+		  }
+		  return sum;
+		}
 }

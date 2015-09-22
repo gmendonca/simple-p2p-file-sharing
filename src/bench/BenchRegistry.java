@@ -7,13 +7,18 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import util.Util;
 import client.Peer;
 
 public class BenchRegistry {
+	
+	public static ArrayList<Long> times;
 
 	public static void main(String[] args) throws IOException {
+		
+		times = new ArrayList<Long>();
 		
 		int numThreads = 4;
     	
@@ -67,6 +72,7 @@ public class BenchRegistry {
     	
     	Socket socket = null;
     	
+    	long start = System.currentTimeMillis();
 		for(int i = 0; i < numPeers; i++){
 			try {
 	    		socket = new Socket(serverAddress, serverPort);
@@ -77,5 +83,13 @@ public class BenchRegistry {
 			RegistryThread rt = new RegistryThread(new Peer(dir, fileNames, fileNames.size(), address, port + i), socket);
 			executor.execute(rt);
 		}
+		executor.shutdown();
+		try {
+			executor.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
+		} catch (InterruptedException e) {
+			System.out.println("Couldn't wait for the tasks to fullfil!");
+		}
+		System.out.println("Average of Peer " + peer.getPeerId() + "'s "+ numRequests + " operations is " + Util.calculateAverage(times) + " ms.");
+		System.out.println("Overall time = " + (System.currentTimeMillis() - start) + " ms");
     }
 }

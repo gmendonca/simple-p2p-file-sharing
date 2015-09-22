@@ -106,9 +106,9 @@ bench_registry(){
     NUMPEERS=$2
 
     if [ $# -eq 4 ]; then
-        java -classpath bin/ bench.BenchRegistry $FOLDERNAME $(($PORT+$i)) $NUMPEERS $SERVER $SERVERPORT &
+        java -classpath bin/ bench.BenchRegistry $FOLDERNAME $(($PORT+$i)) $NUMPEERS $SERVER $SERVERPORT
     elif [ $# -eq 2 ]; then
-        java -classpath bin/ bench.BenchRegistry $FOLDERNAME $(($PORT+$i)) $NUMPEERS &
+        java -classpath bin/ bench.BenchRegistry $FOLDERNAME $(($PORT+$i)) $NUMPEERS
     else
         echo "It should be bench_registry folderName numPeers"
     fi

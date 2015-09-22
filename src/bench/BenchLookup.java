@@ -15,23 +15,29 @@ public class BenchLookup {
 	private static int serverPort = 3434;
 	
 	
+	//public static void sendRequests(Peer peer, ArrayList<String> fileNames, int numRequests) throws IOException{
 	public static void sendRequests(Peer peer, String fileName, int numRequests) throws IOException{
 		
 		long startTime = System.currentTimeMillis();
 		
-		@SuppressWarnings("unused")
+		ArrayList<Long> times = new ArrayList<Long>();
+		
 		long start;
+		int count = 0;
 		for(int i = 0; i < numRequests; i++){
 			start = System.currentTimeMillis();
 			Socket socket = new Socket(serverAddress,serverPort);
+			//peer.lookup(fileNames.get(count++), socket, i);
 			peer.lookup(fileName, socket, i);
-			//System.out.println("Took " + (System.currentTimeMillis() - start) + " ms.");
+			if(count == 10) count = 0;
+			times.add(System.currentTimeMillis() - start);
 		}
 		
 		long stopTime = System.currentTimeMillis();
 		
 		//System.out.println("Overall -> Took " + Util.toSeconds(startTime, stopTime) + " s.");
 		System.out.println("==============================================================================================");
+		System.out.println("Average of Peer " + peer.getPeerId() + "'s "+ numRequests + " operations is " + Util.calculateAverage(times) + " ms.");
 		System.out.println("Overall - Peer " + peer.getPeerId() + " -> Took " + (stopTime-startTime) + " ms.");
 		System.out.println("==============================================================================================");
 	}
@@ -93,6 +99,8 @@ public class BenchLookup {
 			e.printStackTrace();
 		}
     	String fileName = args[2];
+    	//File folderLookup = new File(fileName);
+    	//ArrayList<String> fileNamesLookup = Util.listFilesForFolder(folderLookup);
     	
     	int numRequests = 100;
     	
@@ -102,6 +110,7 @@ public class BenchLookup {
     		System.out.println("Put a valid port number");
     	}
     	
+    	//sendRequests(peer, fileNamesLookup, numRequests);
     	sendRequests(peer, fileName, numRequests);
     }
 }
