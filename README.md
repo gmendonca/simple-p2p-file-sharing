@@ -152,7 +152,7 @@ $ create_directory folderName numFiles
 ```
 
 - folderName: Folder name that will be created to put the text files on
-- numFiles : number of files that will be created in the created folder
+- numFiles: number of files that will be created in the created folder
 
 ### help
 
