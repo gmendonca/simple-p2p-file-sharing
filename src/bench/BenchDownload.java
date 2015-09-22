@@ -16,7 +16,12 @@ public class BenchDownload{
 	
 	
 	public static void sendRequests(Peer peer, String fileName, int numRequests) throws IOException{
+		
 		long startTime = System.currentTimeMillis();
+		
+		ArrayList<Long> times = new ArrayList<Long>();
+		
+		long start;
 		
 		String peerAddress[] = new String[0];
 		
@@ -32,7 +37,9 @@ public class BenchDownload{
 						System.out.println("This peer has the file already, not downloading then.");
 					}else{
 						//System.out.println("Downloading from peer " + addrport[2] + ": " + addrport[0] + ":" + addrport[1]);
+						start = System.currentTimeMillis();
 						peer.download(addrport[0], Integer.parseInt(addrport[1]), fileName, i);
+						times.add(System.currentTimeMillis() - start);
 						break;
 					}
 				}
@@ -46,6 +53,7 @@ public class BenchDownload{
 		
 		//System.out.println("Overall -> Took " + Util.toSeconds(startTime, stopTime) + " s.");
 		System.out.println("==============================================================================================");
+		System.out.println("Average of Peer " + peer.getPeerId() + "'s "+ numRequests + " operations is " + Util.calculateAverage(times) + " ms.");
 		System.out.println("Overall - Peer " + peer.getPeerId() + " -> Took " + (stopTime-startTime) + " ms.");
 		System.out.println("==============================================================================================");
 	}

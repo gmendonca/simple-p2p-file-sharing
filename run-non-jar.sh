@@ -99,6 +99,26 @@ bench_single_registry(){
     fi
 }
 
+bench_registry_nodes(){
+
+    N=$1
+    PORT=13000
+    FOLDERNAME=$2
+    NUMPEERS=$3
+
+    if [ $# -eq 5 ]; then
+        for ((i=0; i<N; i++)); do
+            java -classpath bin/ bench.BenchRegistry $FOLDERNAME $(($PORT+$i)) $NUMPEERS $SERVER $SERVERPORT &
+        done
+    elif [ $# -eq 3 ]; then
+        for ((i=0; i<N; i++)); do
+            java -classpath bin/ bench.BenchRegistry $FOLDERNAME $(($PORT+$i)) $NUMPEERS &
+        done
+    else
+        echo "It should be bench_single_registry numPeers folderName"
+    fi
+}
+
 bench_registry(){
 
     PORT=13000
