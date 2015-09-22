@@ -24,6 +24,7 @@ A quickly overview of the files are shown above:
 * [run_client](https://github.com/gmendonca/simple-p2p-file-sharing#run_client) - Run a Peer.
 * [bench_lookup](https://github.com/gmendonca/simple-p2p-file-sharing#bench_lookup) - Benchmark the system.
 * [bench_single_registry](https://github.com/gmendonca/simple-p2p-file-sharing#bench_single_registry) - Benchmark the system.
+* [bench_registry_nodes](https://github.com/gmendonca/simple-p2p-file-sharing#bench_registry_nodes) - Benchmark the system.
 * [bench_registry](https://github.com/gmendonca/simple-p2p-file-sharing#bench_registry) - Benchmark the system.
 * [bench_download](https://github.com/gmendonca/simple-p2p-file-sharing#bench_download) - Benchmark the system.
 * [create_directory](https://github.com/gmendonca/simple-p2p-file-sharing#create_directory) - Create a test directory.
@@ -90,6 +91,23 @@ For the Benchmarking of registering peers to the server, you can use like below.
 
 - numPeers: number of Peers registering
 - folderName: the benchmarking is a peer so needs a folder name to register to the Server
+
+### bench_registry_nodes
+
+For the Benchmarking of registering peers to the server, you can use like below. In this one, it will run the program 'numPeers' times and will register 'numRegistryPerNode' times using a pool of threads for the concurrency.
+
+1. Uses the Central Indexing Server at localhost:3434
+    ```sh
+    $ bench_registry_nodes numPeers folderName numRegistryPerNode
+    ```
+2. Uses the Central Indexing Server address defined by the user:
+    ```sh
+    $ bench_registry_nodes numPeers folderName numRegistryPerNode serverAddress serverPort
+    ```
+
+- numPeers: number of Peers registering"
+- folderName: the benchmarking is a peer so needs a folder name to register to the Server"
+- numRegistryPerNode - how many times will register each peer"
 
 ### bench_registry
 
