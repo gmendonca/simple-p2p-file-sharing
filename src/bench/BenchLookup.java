@@ -15,8 +15,8 @@ public class BenchLookup {
 	private static int serverPort = 3434;
 	
 	
-	//public static void sendRequests(Peer peer, ArrayList<String> fileNames, int numRequests) throws IOException{
-	public static void sendRequests(Peer peer, String fileName, int numRequests) throws IOException{
+	public static void sendRequests(Peer peer, ArrayList<String> fileNames, int numRequests) throws IOException{
+	//public static void sendRequests(Peer peer, String fileName, int numRequests) throws IOException{
 		
 		long startTime = System.currentTimeMillis();
 		
@@ -27,8 +27,8 @@ public class BenchLookup {
 		for(int i = 0; i < numRequests; i++){
 			start = System.currentTimeMillis();
 			Socket socket = new Socket(serverAddress,serverPort);
-			//peer.lookup(fileNames.get(count++), socket, i);
-			peer.lookup(fileName, socket, i);
+			peer.lookup(fileNames.get(count++), socket, i);
+			//peer.lookup(fileName, socket, i);
 			if(count == 10) count = 0;
 			times.add(System.currentTimeMillis() - start);
 		}
@@ -99,8 +99,8 @@ public class BenchLookup {
 			e.printStackTrace();
 		}
     	String fileName = args[2];
-    	//File folderLookup = new File(fileName);
-    	//ArrayList<String> fileNamesLookup = Util.listFilesForFolder(folderLookup);
+    	File folderLookup = new File(fileName);
+    	ArrayList<String> fileNamesLookup = Util.listFilesForFolder(folderLookup);
     	
     	int numRequests = 100;
     	
@@ -110,7 +110,7 @@ public class BenchLookup {
     		System.out.println("Put a valid port number");
     	}
     	
-    	//sendRequests(peer, fileNamesLookup, numRequests);
-    	sendRequests(peer, fileName, numRequests);
+    	sendRequests(peer, fileNamesLookup, numRequests);
+    	//sendRequests(peer, fileName, numRequests);
     }
 }
