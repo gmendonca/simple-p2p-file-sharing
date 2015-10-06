@@ -1,4 +1,5 @@
 package client;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.EOFException;
@@ -16,7 +17,6 @@ import java.util.concurrent.Executors;
 import bench.BenchRegistry;
 import util.PeerQueue;
 import util.Util;
-
 
 public class Peer {
 	
