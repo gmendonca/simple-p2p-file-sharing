@@ -49,11 +49,13 @@ $ run_server portNumber
 For the client there are two possibilities, the first one uses the default address for the Central Indexing Server and the second one you have to define the address and port for the server:
 
 1. Uses the Central Indexing Server at localhost:3434
+
     ```sh
     $ run_client directory port
     ```
 
 2. Uses the Central Indexing Server address defined by the user:
+
     ```sh
     $ run_client directory port serverAddress serverPort
     ```
@@ -63,10 +65,12 @@ For the client there are two possibilities, the first one uses the default addre
 For the Benchmarking of sending Lookup requests to the server, you can use like this:
 
 1. Uses the Central Indexing Server at localhost:3434
+
     ```sh
     $ bench_lookup numNodes folderName fileName numRequests
     ```
 2. Uses the Central Indexing Server address defined by the user:
+
     ```sh
     $ bench_lookup numNodes folderName fileName numRequests serverAddress serverPort
     ```
@@ -81,10 +85,12 @@ For the Benchmarking of sending Lookup requests to the server, you can use like 
 For the Benchmarking of registering peers to the server, you can use like below. In this one, it will run the program 'numPeers' times.
 
 1. Uses the Central Indexing Server at localhost:3434
+
     ```sh
     $ bench_single_registry numPeers folderName
     ```
 2. Uses the Central Indexing Server address defined by the user:
+
     ```sh
     $ bench_single_registry numPeers folderName serverAddress serverPort
     ```
@@ -97,10 +103,12 @@ For the Benchmarking of registering peers to the server, you can use like below.
 For the Benchmarking of registering peers to the server, you can use like below. In this one, it will run the program 'numPeers' times and will register 'numRegistryPerNode' times using a pool of threads for the concurrency.
 
 1. Uses the Central Indexing Server at localhost:3434
+
     ```sh
     $ bench_registry_nodes numPeers folderName numRegistryPerNode
     ```
 2. Uses the Central Indexing Server address defined by the user:
+
     ```sh
     $ bench_registry_nodes numPeers folderName numRegistryPerNode serverAddress serverPort
     ```
@@ -114,10 +122,12 @@ For the Benchmarking of registering peers to the server, you can use like below.
 For the Benchmarking of registering peers to the server, you can use like below. In this one, it will run the program just once and will register 'numPeers' peers using a pool of threads for the concurrency.
 
 1. Uses the Central Indexing Server at localhost:3434
+
     ```sh
     $ bench_registry folderName numPeers
     ```
 2. Uses the Central Indexing Server address defined by the user:
+
     ```sh
     $ bench_registry folderName numPeers serverAddress serverPort
     ```
@@ -130,10 +140,12 @@ For the Benchmarking of registering peers to the server, you can use like below.
 For the Benchmarking of downloading files from other peer, you can use like this:
 
 1. Uses the Central Indexing Server at localhost:3434
+
     ```sh
     $ bench_download numNodes folderName fileName numRequests
     ```
 2. Uses the Central Indexing Server address defined by the user:
+
     ```sh
     $ bench_download numNodes folderName fileName numRequests serverAddress serverPort
     ```
